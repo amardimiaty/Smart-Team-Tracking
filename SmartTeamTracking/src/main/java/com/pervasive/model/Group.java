@@ -7,11 +7,11 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 public class Group {
 	
 	@GraphId
-	private long ID;
+	private Long ID;
 	private String name;
-	private double latCenter;
-	private double lonCenter;
-	private int radius;
+	private Double latCenter;
+	private Double lonCenter;
+	private Integer radius;
 	
 	@SuppressWarnings("unused")
 	private Group(){}
@@ -55,5 +55,13 @@ public class Group {
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
+
+	@Override
+	public String toString() {
+		return "Group [ID=" + ID + ", name=" + name + ", latCenter=" + latCenter + ", lonCenter=" + lonCenter
+				+ ", radius=" + radius + "]";
+	}
+	
+	
 	
 }

@@ -9,13 +9,13 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 public class User {
 	
 	@GraphId
-	private long ID;
+	private Long ID;
 	private String name;
 	private String surname;
 	private String email;
 	private String password;
-	private double latGPS;
-	private double lonGPS;
+	private Double latGPS;
+	private Double lonGPS;
 	
 	@RelatedTo(type="IN_RANGE", direction=Direction.OUTGOING)
 	private Beacon beacon;
@@ -23,7 +23,7 @@ public class User {
 	@SuppressWarnings("unused")
 	private User(){}
 	
-	public User(long iD, String name, String surname, String email, String password) {
+	public User(Long iD, String name, String surname, String email, String password) {
 		super();
 		ID = iD;
 		this.name = name;
@@ -32,7 +32,7 @@ public class User {
 		this.password = password;
 	}
 	
-	public long getID() {
+	public Long getID() {
 		return ID;
 	}
 	
@@ -44,7 +44,7 @@ public class User {
 		this.beacon = inRange;
 	}
 
-	public void setID(long iD) {
+	public void setID(Long iD) {
 		ID = iD;
 	}
 	
@@ -80,22 +80,26 @@ public class User {
 		this.password = password;
 	}
 	
-	public double getLatGPS() {
+	public Double getLatGPS() {
 		return latGPS;
 	}
 	
-	public void setLatGPS(double latGPS) {
+	public void setLatGPS(Double latGPS) {
 		this.latGPS = latGPS;
 	}
 	
-	public double getLonGPS() {
+	public Double getLonGPS() {
 		return lonGPS;
 	}
 	
-	public void setLonGPS(double longGPS) {
+	public void setLonGPS(Double longGPS) {
 		this.lonGPS = longGPS;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "User [ID=" + ID + ", name=" + name + ", surname=" + surname + ", email=" + email + ", password="
+				+ password + ", latGPS=" + latGPS + ", lonGPS=" + lonGPS + ", beacon=" + beacon + "]";
+	}
 	
 }

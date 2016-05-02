@@ -8,10 +8,10 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 public class Beacon {
 	
 	@GraphId
-	private long ID;
+	private Long ID;
 	private String name;
-	private double latBeacon;
-	private double lonBeacon;
+	private Double latBeacon;
+	private Double lonBeacon;
 	
 	public Beacon(long iD, String name, double latBeacon, double lonBeacon) {
 		super();
@@ -55,5 +55,12 @@ public class Beacon {
 	public void setLonBeacon(double lonBeacon) {
 		this.lonBeacon = lonBeacon;
 	}
+
+	@Override
+	public String toString() {
+		return "Beacon [ID=" + ID + ", name=" + name + ", latBeacon=" + latBeacon + ", lonBeacon=" + lonBeacon + "]";
+	}
+	
+	
 	
 }
