@@ -1,7 +1,12 @@
 package com.pervasive.model;
 
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+
+@NodeEntity
 public class Group {
 	
+	@GraphId
 	private long ID;
 	private String name;
 	private double latCenter;
