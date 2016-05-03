@@ -9,6 +9,7 @@ import org.neo4j.io.fs.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.neo4j.core.GraphDatabase;
 
 import com.pervasive.model.Beacon;
 import com.pervasive.model.User;
@@ -39,7 +40,7 @@ public class SmartTeamTrackingApplication {
 	
 	public static void testUser(GraphDatabaseService graphDatabaseService, UserRepository userRepository,BeaconRepository beaconRepository){
 	
-		User stefano = new User(new Long(1),"Stefano","Conoci","stefano.conoci@gmail.com","badpw");
+		User stefano = new User(1l,"Stefano","Conoci","stefano.conoci@gmail.com","badpw");
 		stefano.setLatGPS(20.0);
 		stefano.setLonGPS(40.2);
 		
@@ -51,8 +52,11 @@ public class SmartTeamTrackingApplication {
 		
 		Transaction tx = graphDatabaseService.beginTx();
 		try{
-			System.out.println("Saving users");
-			userRepository.save(stefano);
+			System.out.println("Creating random node");
+			graphDatabaseService.createNode();
+			
+			//System.out.println("Saving users");
+			//userRepository.save(stefano);
 			//userRepository.save(davide);
 			
 			//System.out.println("Saving beacon");

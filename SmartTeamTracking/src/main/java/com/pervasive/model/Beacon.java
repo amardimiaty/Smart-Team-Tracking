@@ -13,7 +13,7 @@ public class Beacon {
 	private Double latBeacon;
 	private Double lonBeacon;
 	
-	public Beacon(long iD, String name, double latBeacon, double lonBeacon) {
+	public Beacon(long iD, String name, Double latBeacon, Double lonBeacon) {
 		super();
 		ID = iD;
 		this.name = name;
@@ -44,7 +44,7 @@ public class Beacon {
 		return latBeacon;
 	}
 
-	public void setLatBeacon(double latBeacon) {
+	public void setLatBeacon(Double latBeacon) {
 		this.latBeacon = latBeacon;
 	}
 
@@ -52,7 +52,7 @@ public class Beacon {
 		return lonBeacon;
 	}
 
-	public void setLonBeacon(double lonBeacon) {
+	public void setLonBeacon(Double lonBeacon) {
 		this.lonBeacon = lonBeacon;
 	}
 
