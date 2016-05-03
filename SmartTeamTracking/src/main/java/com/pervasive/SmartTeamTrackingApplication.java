@@ -42,7 +42,7 @@ public class SmartTeamTrackingApplication {
 	
 		User stefano = new User(null,"Stefano","Conoci","stefano.conoci@gmail.com","badpw");
 		stefano.setLatGPS(20.0);
-		stefano.setLonGPS(40.2);
+		stefano.setLonGPS(41.2);
 		
 		User davide = new User(null ,"Davide","Meacci","davide.meacci@gmail.com","reallybadpw");
 		Beacon b1 = new Beacon(null, "B2", 41.222d, 45.23d);
