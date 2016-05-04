@@ -1,7 +1,13 @@
 package com.pervasive.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 
 @NodeEntity
 public class Group {
@@ -13,10 +19,17 @@ public class Group {
 	private Double lonCenter;
 	private Integer radius;
 	
+	@RelatedTo(type="CONTAINS", direction=Direction.OUTGOING)
+	private @Fetch Set<User> contains;
+	
+	@RelatedTo(type="PENDING", direction=Direction.OUTGOING)
+	private @Fetch Set<User> pending;
+	
+	
 	@SuppressWarnings("unused")
 	private Group(){}
 	
-	public Group(long iD, String name, double latCenter, double lonCenter, int radius) {
+	public Group(Long iD, String name, double latCenter, double lonCenter, int radius) {
 		super();
 		ID = iD;
 		this.name = name;
@@ -25,6 +38,34 @@ public class Group {
 		this.radius = radius;
 	}
 
+	public void addUser(User user){
+		if( this.contains == null)
+			this.contains = new HashSet<User>();
+		this.contains.add(user);
+	}
+	
+	public void addUserPending(User user){
+		if( this.pending == null)
+			this.pending = new HashSet<User>();
+		this.pending.add(user);
+	}
+	
+	public boolean removeUser( User user){
+		return contains.remove(user);
+	}
+	
+	public boolean removeUserPending(User user){
+		return pending.remove(user);
+	}
+	
+	public Set<User> getContains(){
+		return this.contains;
+	}
+	
+	public Set<User> getPending(){
+		return this.pending;
+	}
+	
 	public long getID() {
 		return ID;
 	}
@@ -59,8 +100,10 @@ public class Group {
 	@Override
 	public String toString() {
 		return "Group [ID=" + ID + ", name=" + name + ", latCenter=" + latCenter + ", lonCenter=" + lonCenter
-				+ ", radius=" + radius + "]";
+				+ ", radius=" + radius + ", contains=" + contains + ", pending=" + pending + "]";
 	}
+
+	
 	
 	
 	

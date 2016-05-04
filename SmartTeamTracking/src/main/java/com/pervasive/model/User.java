@@ -1,6 +1,8 @@
 package com.pervasive.model;
 
+
 import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -18,7 +20,7 @@ public class User {
 	private Double lonGPS;
 	
 	@RelatedTo(type="IN_RANGE", direction=Direction.OUTGOING)
-	private Beacon beacon;
+	private @Fetch Beacon beacon;  
 	
 	@SuppressWarnings("unused")
 	private User(){}
@@ -36,12 +38,12 @@ public class User {
 		return ID;
 	}
 	
-	public Beacon getInRange() {
-		return beacon;
+	public Beacon getBeacon() {
+		return this.beacon;
 	}
 
-	public void setInRange(Beacon inRange) {
-		this.beacon = inRange;
+	public void setBeacon(Beacon beacon) {
+		this.beacon = beacon;
 	}
 
 	public void setID(Long iD) {
