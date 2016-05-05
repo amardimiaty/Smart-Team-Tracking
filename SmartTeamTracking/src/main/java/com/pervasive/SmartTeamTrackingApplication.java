@@ -2,8 +2,11 @@ package com.pervasive;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.io.fs.FileUtils;
 import org.springframework.boot.SpringApplication;
@@ -88,5 +91,7 @@ public class SmartTeamTrackingApplication {
 		finally{
 			tx.close();
 		}
+		
+		graphDatabaseService.shutdown();
 	}
 }
