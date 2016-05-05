@@ -1,9 +1,6 @@
 package com.pervasive.rest;
-import com.pervasive.*;
 import com.pervasive.model.User;
 import com.pervasive.repository.UserRepository;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
@@ -20,7 +17,7 @@ public class UserController {
 	private ApplicationContext context;
     
     @RequestMapping("/user/")
-    public String findUser(@RequestParam(value="name", defaultValue="null") String name) {
+    public User findUser(@RequestParam(value="name", defaultValue="null") String name) {
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
@@ -30,8 +27,9 @@ public class UserController {
 			
 			User UserFromNeo = userRepository.findByName(name);
 			tx.success();
-			if(UserFromNeo == null) return "No User Found";
-			return UserFromNeo.toString();
+			
+			if(UserFromNeo == null) return null;
+			return UserFromNeo;
 				
         	}
 		

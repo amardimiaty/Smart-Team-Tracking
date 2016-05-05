@@ -91,7 +91,5 @@ public class SmartTeamTrackingApplication {
 		finally{
 			tx.close();
 		}
-		
-		graphDatabaseService.shutdown();
 	}
 }
