@@ -3,17 +3,13 @@ package com.pervasive;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.io.fs.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.neo4j.core.GraphDatabase;
-
 import com.pervasive.model.Beacon;
 import com.pervasive.model.Group;
 import com.pervasive.model.User;
@@ -46,14 +42,14 @@ public class SmartTeamTrackingApplication {
 	
 	public static void testUser(GraphDatabaseService graphDatabaseService, UserRepository userRepository,BeaconRepository beaconRepository,GroupRepository groupRepository){
 	
-		User stefano = new User(null,"Stefano","Conoci","stefano.conoci@gmail.com","badpw");
+		User stefano = new User("Stefano","Conoci","stefano.conoci@gmail.com","badpw");
 		stefano.setLatGPS(20.0);
 		stefano.setLonGPS(44.2);
 		
-		User davide = new User(null ,"Davide","Meacci","davide.meacci@gmail.com","reallybadpw");
-		Beacon b1 = new Beacon(null, "B2", 41.222d, 45.23d);
+		User davide = new User("Davide","Meacci","davide.meacci@gmail.com","reallybadpw");
+		Beacon b1 = new Beacon(56785l, "B2", 41.222d, 45.23d);
 		
-		Group froganGroup = new Group(null, "Vegan Group",40.2,45.2,2);
+		Group froganGroup = new Group("Vegan Group",40.2,45.2,2);
 		froganGroup.addUser(stefano);
 		froganGroup.addUser(davide);
 		
@@ -85,6 +81,14 @@ public class SmartTeamTrackingApplication {
 			System.out.println("Retrieving group");
 			Group groupFromNeo = groupRepository.findByName("Vegan Group");
 			System.out.println(groupFromNeo);
+			
+			System.out.println("Result from query getGroupsForUser");
+			Iterable<Group> iterableFromQuery = groupRepository.getGroupsforUser("stefano.conoci@gmail.com");
+			Iterator<Group> it  = iterableFromQuery.iterator();
+			while( it.hasNext()){
+				Group currentGroup = it.next();
+				System.out.println(currentGroup);
+			}
 			
 			tx.success();
 		}

@@ -14,8 +14,8 @@ public class User {
 	private Long ID;
 	private String name;
 	private String surname;
-	private String email;
-	private String password;
+	private String email;	//KEY
+	private String password;	
 	private Double latGPS;
 	private Double lonGPS;
 	
@@ -25,9 +25,9 @@ public class User {
 	@SuppressWarnings("unused")
 	private User(){}
 	
-	public User(Long iD, String name, String surname, String email, String password) {
+	public User(String name, String surname, String email, String password) {
 		super();
-		ID = iD;
+		ID = null;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;

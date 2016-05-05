@@ -13,7 +13,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 public class Group {
 	
 	@GraphId
-	private Long ID;
+	private Long ID;	//KEY
 	private String name;
 	private Double latCenter;
 	private Double lonCenter;
@@ -29,9 +29,9 @@ public class Group {
 	@SuppressWarnings("unused")
 	private Group(){}
 	
-	public Group(Long iD, String name, double latCenter, double lonCenter, int radius) {
+	public Group(String name, double latCenter, double lonCenter, int radius) {
 		super();
-		ID = iD;
+		ID = null;
 		this.name = name;
 		this.latCenter = latCenter;
 		this.lonCenter = lonCenter;

@@ -9,13 +9,15 @@ public class Beacon {
 	
 	@GraphId
 	private Long ID;
+	private Long beaconIdentifier; //KEY
 	private String name;
 	private Double latBeacon;
 	private Double lonBeacon;
 	
-	public Beacon(Long iD, String name, Double latBeacon, Double lonBeacon) {
+	public Beacon(Long beaconIdentifier, String name, Double latBeacon, Double lonBeacon) {
 		super();
-		ID = iD;
+		ID = null;
+		this.beaconIdentifier = beaconIdentifier;
 		this.name = name;
 		this.latBeacon = latBeacon;
 		this.lonBeacon = lonBeacon;
@@ -24,12 +26,21 @@ public class Beacon {
 	@SuppressWarnings("unused")
 	private Beacon(){}
 
-	public long getID() {
+	
+	public Long getID() {
 		return ID;
 	}
 
-	public void setID(long iD) {
+	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public Long getBeaconIdentifier() {
+		return beaconIdentifier;
+	}
+
+	public void setBeaconIdentifier(Long beaconIdentifier) {
+		this.beaconIdentifier = beaconIdentifier;
 	}
 
 	public String getName() {
@@ -58,7 +69,7 @@ public class Beacon {
 
 	@Override
 	public String toString() {
-		return "Beacon [ID=" + ID + ", name=" + name + ", latBeacon=" + latBeacon + ", lonBeacon=" + lonBeacon + "]";
+		return "Beacon [ID=" + ID +", beaconIdentifier=" + beaconIdentifier+ ", name=" + name + ", latBeacon=" + latBeacon + ", lonBeacon=" + lonBeacon + "]";
 	}
 	
 	
