@@ -31,7 +31,7 @@ public class BeaconController {
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			
-			Iterable<Beacon> beacons = beaconRepository.getBeacons();
+			Iterable<Beacon> beacons = beaconRepository.findAll();
 			Iterator<Beacon> it = beacons.iterator();
 			tx.success();
 			List<Beacon> result = new LinkedList<Beacon>();

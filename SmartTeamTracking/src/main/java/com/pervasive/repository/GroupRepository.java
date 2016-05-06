@@ -8,6 +8,8 @@ import com.pervasive.model.User;
 public interface GroupRepository extends CrudRepository<Group, String>{
 
 	Group findByName(String name);
+
+	Group findOne(Long ID);
 	
 	@Query("MATCH (g:Group)-[r:CONTAINS]->(u:User) WHERE u.email={0} RETURN g")
 	Iterable<Group> getGroupsforUser(String userMail);
@@ -15,8 +17,6 @@ public interface GroupRepository extends CrudRepository<Group, String>{
 	@Query("MATCH (g:Group)-[r:PENDING]->(u:User) WHERE u.email={0} RETURN g")
 	Iterable<Group> getPendingGroupsForUser(String userMail);
 	
-	@Query("MATCH (g:Group)-[r:CONTAINS]->(u:User) WHERE ID(g)={0} RETURN u")
-	Iterable<User> getUsers(Long groupID);
 	
 	
 }

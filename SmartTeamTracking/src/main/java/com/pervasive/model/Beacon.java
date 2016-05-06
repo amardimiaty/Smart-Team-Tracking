@@ -72,6 +72,20 @@ public class Beacon {
 		return "Beacon [ID=" + ID +", beaconIdentifier=" + beaconIdentifier+ ", name=" + name + ", latBeacon=" + latBeacon + ", lonBeacon=" + lonBeacon + "]";
 	}
 	
+	@Override
+	public boolean equals(Object other){
+	    if (other == null) return false;
+	    if (other == this) return true;
+	    if (!(other instanceof User))return false;
+	    Beacon b = (Beacon)other;
+	    if(this.beaconIdentifier==b.beaconIdentifier) return true;
+	    return false;
+	}
+	
+	@Override
+	public int hashCode() {
+	    return this.beaconIdentifier.hashCode();
+	}
 	
 	
 }

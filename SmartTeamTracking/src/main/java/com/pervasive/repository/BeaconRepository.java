@@ -9,6 +9,9 @@ public interface BeaconRepository extends CrudRepository<Beacon, String>{
 	
 	Beacon findByName(String name);
 	
+	Beacon findByBeaconIdentifier(Long beaconIdentifier);
+	
+	
 	@Query("MATCH (beacon:Beacon) RETURN beacon")
 	Iterable<Beacon> getBeacons();
 

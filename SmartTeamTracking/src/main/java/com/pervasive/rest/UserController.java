@@ -1,6 +1,8 @@
 package com.pervasive.rest;
+import com.pervasive.model.Beacon;
 import com.pervasive.model.Group;
 import com.pervasive.model.User;
+import com.pervasive.repository.BeaconRepository;
 import com.pervasive.repository.UserRepository;
 
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -46,7 +48,10 @@ public class UserController {
     public String addInRange(@PathVariable String email, @PathVariable Long beaconIdentifier){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+    	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
+    	
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        
         System.out.println("EMAIL");
         System.out.println(email);
         System.out.println("BEACON IDENTIFIER");
@@ -55,11 +60,15 @@ public class UserController {
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			
-			User UserFromNeo = userRepository.removeInRange(email);
+			User UserFromNeo = userRepository.findByEmail(email);
+			Beacon BeaconFromNeo = beaconRepository.findByBeaconIdentifier(beaconIdentifier);
+			
+			
 			System.out.println("first call done");
 			if(beaconIdentifier!=null)
-				UserFromNeo = userRepository.addInRange(email,beaconIdentifier);
+				UserFromNeo.setBeacon(BeaconFromNeo);
 			
+			userRepository.save(UserFromNeo);
 			tx.success();
 			
 			System.out.println("USER");
@@ -77,114 +86,7 @@ public class UserController {
     	
     }
     
-    
-    
-    
-    @RequestMapping(method = RequestMethod.POST,value="/User/{email}/{groupID}/accept")
-    public Group addContains(@PathVariable String email, @PathVariable Long groupID){
-    	
-    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
-        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupID);
-
-    	Transaction tx = graphDatabaseService.beginTx();
-		try{
-			
-			User UserFromNeo = userRepository.removePending(email,groupID);
-			Group GroupFromNeo = userRepository.addContains(email,groupID);
-			
-			
-			tx.success();
-			
-			System.out.println("USER");
-	        System.out.println(UserFromNeo);
-			return GroupFromNeo;
-				
-        	}
-		
-		finally{
-			tx.close();
-		}
-    	
-    	
-    	
-    }
-    
-    
-    
-    @RequestMapping(method = RequestMethod.POST,value="/User/{email}/{groupID}/refuse")
-    public String removePending(@PathVariable String email, @PathVariable Long groupID){
-    	
-    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
-        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupID);
-
-    	Transaction tx = graphDatabaseService.beginTx();
-		try{
-			
-			User UserFromNeo = userRepository.removePending(email,groupID);
-			
-			tx.success();
-			
-			System.out.println("USER");
-	        System.out.println(UserFromNeo);
-			if(UserFromNeo.getEmail().equals(email)) return "Transaction done successfully!";
-			return "Transaction failed";
-				
-        	}
-		
-		finally{
-			tx.close();
-		}
-    	
-    	
-    	
-    }
-    
-    
-    
-    
-    @RequestMapping(method = RequestMethod.POST,value="/User/{email}/{groupID}/invite")
-    public String addPending(@PathVariable String email, @PathVariable Long groupID){
-    	
-    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
-        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupID);
-
-    	Transaction tx = graphDatabaseService.beginTx();
-		try{
-			
-			User UserFromNeo = userRepository.addPending(email,groupID);
-			
-			tx.success();
-			
-			System.out.println("USER");
-	        System.out.println(UserFromNeo);
-			if(UserFromNeo.getEmail().equals(email) ) return "Transaction done successfully!";
-			return "Transaction failed";
-				
-        	}
-		
-		finally{
-			tx.close();
-		}
-    	
-    	
-    	
-    }
-    
-    
-    
-    
+  
     
     	
     

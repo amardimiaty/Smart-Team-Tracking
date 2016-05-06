@@ -104,4 +104,20 @@ public class User {
 				+ password + ", latGPS=" + latGPS + ", lonGPS=" + lonGPS + ", beacon=" + beacon + "]";
 	}
 	
+	
+	@Override
+	public boolean equals(Object other){
+	    if (other == null) return false;
+	    if (other == this) return true;
+	    if (!(other instanceof User))return false;
+	    User user = (User)other;
+	    if(this.email.equals(user.email)) return true;
+	    return false;
+	}
+	
+	@Override
+	public int hashCode() {
+	    return email.hashCode();
+	}
+	
 }

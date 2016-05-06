@@ -49,6 +49,7 @@ public class SmartTeamTrackingApplication {
 		User davide = new User("Davide","Meacci","davide.meacci@gmail.com","reallybadpw");
 		
 		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com","reallybadpw");
+		User chicco = new User("Chicco","qwerty","chicco@gmail.com","reallybadpw");
 		Beacon b1 = new Beacon(56785l, "B2", 41.222d, 45.23d);
 		Beacon a1 = new Beacon(56786l, "A1", 31.222d, 45.23d);
 		Beacon a2 = new Beacon(56787l, "A2", 32.222d, 45.23d);
@@ -70,6 +71,7 @@ public class SmartTeamTrackingApplication {
 			userRepository.save(stefano);
 			userRepository.save(davide);
 			userRepository.save(angelo);
+			userRepository.save(chicco);
 			
 			System.out.println("Saving beacon");
 			beaconRepository.save(b1);

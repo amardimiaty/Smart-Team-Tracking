@@ -1,6 +1,7 @@
 package com.pervasive.model;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
@@ -101,6 +102,21 @@ public class Group {
 	public String toString() {
 		return "Group [ID=" + ID + ", name=" + name + ", latCenter=" + latCenter + ", lonCenter=" + lonCenter
 				+ ", radius=" + radius + ", contains=" + contains + ", pending=" + pending + "]";
+	}
+	
+	@Override
+	public boolean equals(Object other){
+	    if (other == null) return false;
+	    if (other == this) return true;
+	    if (!(other instanceof User))return false;
+	    Group g = (Group)other;
+	    if(this.ID == g.ID) return true;
+	    return false;
+	}
+	
+	@Override
+	public int hashCode() {
+	    return this.ID.hashCode();
 	}
 
 	
