@@ -47,7 +47,14 @@ public class SmartTeamTrackingApplication {
 		stefano.setLonGPS(44.2);
 		
 		User davide = new User("Davide","Meacci","davide.meacci@gmail.com","reallybadpw");
+		
+		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com","reallybadpw");
 		Beacon b1 = new Beacon(56785l, "B2", 41.222d, 45.23d);
+		Beacon a1 = new Beacon(56786l, "A1", 31.222d, 45.23d);
+		Beacon a2 = new Beacon(56787l, "A2", 32.222d, 45.23d);
+		Beacon a3 = new Beacon(56788l, "A3", 33.222d, 45.23d);
+		Beacon a4 = new Beacon(56789l, "A4", 34.222d, 45.23d);
+		
 		
 		Group froganGroup = new Group("Vegan Group",40.2,45.2,2);
 		froganGroup.addUser(stefano);
@@ -62,9 +69,14 @@ public class SmartTeamTrackingApplication {
 			System.out.println("Saving users");
 			userRepository.save(stefano);
 			userRepository.save(davide);
+			userRepository.save(angelo);
 			
 			System.out.println("Saving beacon");
 			beaconRepository.save(b1);
+			beaconRepository.save(a1);
+			beaconRepository.save(a2);
+			beaconRepository.save(a3);
+			beaconRepository.save(a4);
 			
 			groupRepository.save(froganGroup);
 			
