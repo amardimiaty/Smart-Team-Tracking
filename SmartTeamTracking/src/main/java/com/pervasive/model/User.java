@@ -11,7 +11,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 public class User {
 	
 	@GraphId
-	private Long ID;
+	private Long id;
 	private String name;
 	private String surname;
 	private String email;	//KEY
@@ -27,15 +27,15 @@ public class User {
 	
 	public User(String name, String surname, String email, String password) {
 		super();
-		ID = null;
+		id = null;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.password = password;
 	}
 	
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 	
 	public Beacon getBeacon() {
@@ -46,8 +46,8 @@ public class User {
 		this.beacon = beacon;
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public String getName() {
@@ -100,7 +100,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [ID=" + ID + ", name=" + name + ", surname=" + surname + ", email=" + email + ", password="
+		return "User [ID=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", password="
 				+ password + ", latGPS=" + latGPS + ", lonGPS=" + lonGPS + ", beacon=" + beacon + "]";
 	}
 	

@@ -1,7 +1,6 @@
 package com.pervasive.model;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
@@ -14,7 +13,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 public class Group {
 	
 	@GraphId
-	private Long ID;	//KEY
+	private Long id;	//KEY
 	private String name;
 	private Double latCenter;
 	private Double lonCenter;
@@ -32,7 +31,7 @@ public class Group {
 	
 	public Group(String name, double latCenter, double lonCenter, int radius) {
 		super();
-		ID = null;
+		id = null;
 		this.name = name;
 		this.latCenter = latCenter;
 		this.lonCenter = lonCenter;
@@ -67,11 +66,11 @@ public class Group {
 		return this.pending;
 	}
 	
-	public long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
-	public void setID(long iD) {
-		ID = iD;
+	public void setId(long id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -97,10 +96,20 @@ public class Group {
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
+	
+	//Used to invalid contains relationship to not send users. Never save the changes, only used in rest API
+	public void invalidContains(){
+		this.contains = null;
+	}
+	
+	//Used to invalid pending relationship to not send users. Never save the changes, only used in rest API
+	public void invalidPending(){
+		this.pending = null;
+	}
 
 	@Override
 	public String toString() {
-		return "Group [ID=" + ID + ", name=" + name + ", latCenter=" + latCenter + ", lonCenter=" + lonCenter
+		return "Group [ID=" + id + ", name=" + name + ", latCenter=" + latCenter + ", lonCenter=" + lonCenter
 				+ ", radius=" + radius + ", contains=" + contains + ", pending=" + pending + "]";
 	}
 	
@@ -110,13 +119,13 @@ public class Group {
 	    if (other == this) return true;
 	    if (!(other instanceof User))return false;
 	    Group g = (Group)other;
-	    if(this.ID == g.ID) return true;
+	    if(this.id == g.id) return true;
 	    return false;
 	}
 	
 	@Override
 	public int hashCode() {
-	    return this.ID.hashCode();
+	    return this.id.hashCode();
 	}
 
 	

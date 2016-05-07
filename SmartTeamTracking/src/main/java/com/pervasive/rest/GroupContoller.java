@@ -1,11 +1,9 @@
 package com.pervasive.rest;
-import com.pervasive.model.Beacon;
 import com.pervasive.model.Group;
 import com.pervasive.model.User;
 import com.pervasive.repository.GroupRepository;
 import com.pervasive.repository.UserRepository;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +13,7 @@ import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,13 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GroupContoller {
 	
-	
-	
 	@Autowired
 	private ApplicationContext context;
     
-    @RequestMapping("/group/{groupID}")
-    public Set<User> getUsers(@PathVariable Long groupID) {
+    @RequestMapping("/group/{groupId}")
+    public Set<User> getUsers(@PathVariable Long groupId) {
     	
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
@@ -38,9 +35,11 @@ public class GroupContoller {
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			
-			Group GroupFromNeo = groupRepository.findOne(groupID);
+			Group groupFromNeo = groupRepository.findById(groupId);
 			
-			return GroupFromNeo.getContains();
+		    tx.success();
+			
+			return groupFromNeo.getContains();
 				
         	}
 		
@@ -50,10 +49,8 @@ public class GroupContoller {
     	
     }
     
-    
-    
-    @RequestMapping("/group/{groupID}/count")
-    public int getCountUsers(@PathVariable Long groupID) {
+    @RequestMapping("/group/{groupId}/count")
+    public int getCountUsers(@PathVariable Long groupId) {
     	
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
@@ -61,7 +58,7 @@ public class GroupContoller {
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			
-			Group GroupFromNeo = groupRepository.findOne(groupID);
+			Group GroupFromNeo = groupRepository.findById(groupId);
 			
 			return GroupFromNeo.getContains().size();
 				
@@ -73,120 +70,75 @@ public class GroupContoller {
     	
     }
     
-    
-    
-    
-    
-
-    
-    @RequestMapping(method = RequestMethod.POST,value="/User/{email}/{groupID}/accept")
-    public Group addContains(@PathVariable String email, @PathVariable Long groupID){
+ 
+    //Creates a new group and returns group identifier. In case of error returns 0. 
+    @RequestMapping(method = RequestMethod.POST,value="/group")
+    public long createGroup(@RequestParam(value="name", defaultValue="null") String name,
+    						@RequestParam(value="lat", defaultValue="0.0") double latitude,
+    						@RequestParam(value="lon", defaultValue="0.0") double longitude,
+    						@RequestParam(value="radius", defaultValue="30") int radius){
     	
-    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupID);
-
+        long result = 0; 
+        
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			
-			User UserFromNeo = userRepository.findByEmail(email);
-			Group GroupFromNeo = groupRepository.findOne(groupID);
-			GroupFromNeo.removeUserPending(UserFromNeo);
-			GroupFromNeo.addUser(UserFromNeo);
-			groupRepository.save(GroupFromNeo);
+			Group newGroup = new Group(name, latitude, longitude, radius);
+			newGroup = groupRepository.save(newGroup);
 			
+			if(newGroup.getId() == null)
+				return 0;
+			result = newGroup.getId();
+			tx.success();
+				
+        	}
+		
+		finally{
+			tx.close();
+		}
+		return result;
+    }
+    
+    // Invite users in a group identified by id. List of users is sent as a list of strings of email in the body. 
+    // Returns null if can't find user, else returns the list of users email successfully invited. 
+    @RequestMapping(method = RequestMethod.POST,value="/group/{groupId}/invite", consumes = "application/json")
+    public List<String> inviteUserToGroup(@PathVariable Long groupId, @RequestBody List<String> emails){
+    	
+    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+        UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+    	GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+    	
+    	List<String> invitedUsers = new LinkedList<String>();
+    	
+        Transaction tx = graphDatabaseService.beginTx();
+		try{
+			Group groupFromNeo = groupRepository.findById(groupId);
+			if(groupFromNeo == null)
+				return null;
+			
+			for(String email: emails){
+				User userToAdd = userRepository.findByEmail(email);
+				if(userToAdd != null) {
+					invitedUsers.add(userToAdd.getEmail());
+					groupFromNeo.addUserPending(userToAdd);
+				}
+			}
+			groupRepository.save(groupFromNeo);
 			
 			tx.success();
-			
-			System.out.println("USER");
-	        System.out.println(UserFromNeo);
-			return GroupFromNeo;
-				
         	}
 		
 		finally{
 			tx.close();
 		}
-    	
-    	
-    	
-    }
-    
-    
-    
-    @RequestMapping(method = RequestMethod.POST,value="/User/{email}/{groupID}/refuse")
-    public Group removePending(@PathVariable String email, @PathVariable Long groupID){
-    	
-    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
-    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
-        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupID);
-
-    	Transaction tx = graphDatabaseService.beginTx();
-		try{
-			
-			User UserFromNeo = userRepository.findByEmail(email);
-			Group GroupFromNeo = groupRepository.findOne(groupID);
-			System.out.println(GroupFromNeo);
-			System.out.println(UserFromNeo);
-			System.out.println(GroupFromNeo.removeUserPending(UserFromNeo));
-
-			groupRepository.save(GroupFromNeo);
-			
-			return GroupFromNeo;
-				
-        	}
 		
-		finally{
-			tx.close();
-		}
-    	
-    	
-    	
-    }
-    
-    
-    
-    
-    @RequestMapping(method = RequestMethod.POST,value="/User/{email}/{groupID}/invite")
-    public Group addPending(@PathVariable String email, @PathVariable Long groupID){
-    	
-    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
-    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
-        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupID);
-
-    	Transaction tx = graphDatabaseService.beginTx();
-		try{
-			
-			User UserFromNeo = userRepository.findByEmail(email);
-			Group GroupFromNeo = groupRepository.findOne(groupID);
-			GroupFromNeo.addUserPending(UserFromNeo);
-			groupRepository.save(GroupFromNeo);
-			
-			tx.success();
-			
-			return GroupFromNeo;
-				
-        	}
 		
-		finally{
-			tx.close();
-		}
-    	
-    	
-    	
+		return invitedUsers;
     }
+    
+    
 	
 	
 	

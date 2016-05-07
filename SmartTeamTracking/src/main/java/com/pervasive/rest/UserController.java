@@ -3,7 +3,13 @@ import com.pervasive.model.Beacon;
 import com.pervasive.model.Group;
 import com.pervasive.model.User;
 import com.pervasive.repository.BeaconRepository;
+import com.pervasive.repository.GroupRepository;
 import com.pervasive.repository.UserRepository;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
@@ -21,7 +27,7 @@ public class UserController {
 	@Autowired
 	private ApplicationContext context;
     
-    @RequestMapping("/user/")
+    @RequestMapping("/user")
     public User findUser(@RequestParam(value="name", defaultValue="null") String name) {
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
@@ -44,7 +50,7 @@ public class UserController {
     	
     }
     
-    @RequestMapping(method = RequestMethod.POST,value="/User/{email}/{beaconIdentifier}")
+    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{beaconIdentifier}")
     public String addInRange(@PathVariable String email, @PathVariable Long beaconIdentifier){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
@@ -87,8 +93,190 @@ public class UserController {
     }
     
   
-    
+    @RequestMapping("/user/{email}/groups")
+    public List<Group> getGroupsOfUsers(@PathVariable String email){
     	
+    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        
+        List<Group> groupList = new LinkedList<>();
+
+    	Transaction tx = graphDatabaseService.beginTx();
+    	try{
+			Iterable<Group> iterableGroup = groupRepository.getGroupsforUser(email);
+			Iterator<Group> it = iterableGroup.iterator();
+			while (it.hasNext()){
+				Group g = it.next();
+				g.invalidContains();
+				g.invalidPending();
+				groupList.add(g);
+			}
+			tx.success();	
+        }
+		finally{
+			tx.close();
+		}
+		return groupList;
+    }
+    
+
+    
+    @RequestMapping("/user/{email}/pending")
+    public List<Group> getPendingGroupsOfUsers(@PathVariable String email){
+    	
+    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        
+        List<Group> groupList = new LinkedList<>();
+
+    	Transaction tx = graphDatabaseService.beginTx();
+    	try{
+			Iterable<Group> iterableGroup = groupRepository.getPendingGroupsForUser(email);
+			Iterator<Group> it = iterableGroup.iterator();
+			while (it.hasNext()){
+				Group g = it.next();
+				g.invalidContains();
+				g.invalidPending();
+				groupList.add(g);
+			}
+			tx.success();	
+        }
+		finally{
+			tx.close();
+		}
+		return groupList;
+    }
     
     
+    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/")
+    public String updateUserGPSCoordinates(@PathVariable String email,
+    									   @RequestParam(value="lat", defaultValue="null") Double latitude, 
+    									   @RequestParam(value="lon", defaultValue="null") Double longitude){
+    	
+    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        
+        Transaction tx = graphDatabaseService.beginTx();
+		try{
+			
+			System.out.println("Email received is:");
+			System.out.println(email);
+			User userFromNeo = userRepository.findByEmail(email);
+			if(userFromNeo == null){
+				System.out.println("Result of userFromNeo:");
+				System.out.println(userFromNeo);
+				return null;
+			}
+			
+			userFromNeo.setLatGPS(latitude);
+			userFromNeo.setLonGPS(longitude);
+			userRepository.save(userFromNeo);
+			
+			tx.success();
+        	}
+		
+		finally{
+			tx.close();
+		}
+		return "Updated user coordinates successfully";
+    }
+    
+    
+    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/accept")
+    public Group addContains(@PathVariable String email, @PathVariable Long groupId){
+    	
+    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        System.out.println("EMAIL");
+        System.out.println(email);
+        System.out.println("GROUP IDENTIFIER");
+        System.out.println(groupId);
+
+    	Transaction tx = graphDatabaseService.beginTx();
+		try{
+			
+			User UserFromNeo = userRepository.findByEmail(email);
+			Group GroupFromNeo = groupRepository.findById(groupId);
+			GroupFromNeo.removeUserPending(UserFromNeo);
+			GroupFromNeo.addUser(UserFromNeo);
+			groupRepository.save(GroupFromNeo);
+			
+			
+			tx.success();
+			
+			System.out.println("USER");
+	        System.out.println(UserFromNeo);
+			return GroupFromNeo;
+				
+        	}
+		
+		finally{
+			tx.close();
+		}
+    }
+    
+    
+    
+    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/refuse")
+    public Group removePending(@PathVariable String email, @PathVariable Long groupId){
+    	
+    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        System.out.println("EMAIL");
+        System.out.println(email);
+        System.out.println("GROUP IDENTIFIER");
+        System.out.println(groupId);
+
+    	Transaction tx = graphDatabaseService.beginTx();
+		try{
+			
+			User UserFromNeo = userRepository.findByEmail(email);
+			Group GroupFromNeo = groupRepository.findById(groupId);
+			System.out.println(GroupFromNeo);
+			System.out.println(UserFromNeo);
+			System.out.println(GroupFromNeo.removeUserPending(UserFromNeo));
+
+			groupRepository.save(GroupFromNeo);
+			
+			return GroupFromNeo;
+				
+        	}
+		
+		finally{
+			tx.close();
+		}
+    }
+    
+    
+    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/invite")
+    public Group addPending(@PathVariable String email, @PathVariable Long groupId){
+    	
+    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        System.out.println("EMAIL");
+        System.out.println(email);
+        System.out.println("GROUP IDENTIFIER");
+        System.out.println(groupId);
+
+    	Transaction tx = graphDatabaseService.beginTx();
+		try{
+			
+			User UserFromNeo = userRepository.findByEmail(email);
+			Group GroupFromNeo = groupRepository.findById(groupId);
+			GroupFromNeo.addUserPending(UserFromNeo);
+			groupRepository.save(GroupFromNeo);
+			
+			tx.success();
+			
+			return GroupFromNeo;
+				
+        	}
+		
+		finally{
+			tx.close();
+		}
+    }
 }

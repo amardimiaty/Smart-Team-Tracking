@@ -104,6 +104,10 @@ public class SmartTeamTrackingApplication {
 				System.out.println(currentGroup);
 			}
 			
+			User userFromQuery = userRepository.findByEmail("stefano.conoci@gmail.com");
+			System.out.println("Testing findByEmail");
+			System.out.println(userFromQuery);
+			
 			tx.success();
 		}
 		finally{

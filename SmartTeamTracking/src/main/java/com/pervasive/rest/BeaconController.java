@@ -12,7 +12,6 @@ import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,7 +21,7 @@ public class BeaconController {
 	@Autowired
 	private ApplicationContext context;
     
-    @RequestMapping("/Beacon/")
+    @RequestMapping("/beacon")
     public List<Beacon> getBeacon() {
     	
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
