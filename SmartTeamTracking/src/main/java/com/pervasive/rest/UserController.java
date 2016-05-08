@@ -27,69 +27,59 @@ public class UserController {
 	@Autowired
 	private ApplicationContext context;
     
+	//Returns null if can't find User 
     @RequestMapping("/user")
     public User findUser(@RequestParam(value="name", defaultValue="null") String name) {
     	
+    	User userFromNeo;
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
 
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			
-			User UserFromNeo = userRepository.findByName(name);
+			userFromNeo = userRepository.findByName(name);
 			tx.success();
-			
-			if(UserFromNeo == null) return null;
-			return UserFromNeo;
-				
-        	}
 		
+			if(userFromNeo == null) {
+				tx.close();
+				return null;
+			}				
+        }
 		finally{
 			tx.close();
 		}
-    	
+		return userFromNeo;
     }
     
+    
+    //Returns true if correctly executed, if can find either group or beacon returns false 
     @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{beaconIdentifier}")
-    public String addInRange(@PathVariable String email, @PathVariable Long beaconIdentifier){
+    public boolean addInRange(@PathVariable String email, @PathVariable Long beaconIdentifier){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
     	
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("BEACON IDENTIFIER");
-        System.out.println(beaconIdentifier);
-
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
+			User userFromNeo = userRepository.findByEmail(email);
+			Beacon beaconFromNeo = beaconRepository.findByBeaconIdentifier(beaconIdentifier);
 			
-			User UserFromNeo = userRepository.findByEmail(email);
-			Beacon BeaconFromNeo = beaconRepository.findByBeaconIdentifier(beaconIdentifier);
+			if(userFromNeo == null){
+				tx.success();
+				tx.close();
+				return false;
+			}
 			
-			
-			System.out.println("first call done");
-			if(beaconIdentifier!=null)
-				UserFromNeo.setBeacon(BeaconFromNeo);
-			
-			userRepository.save(UserFromNeo);
+			//This also covers the case in which the beacon is null. 
+			userFromNeo.setBeacon(beaconFromNeo);
+			userRepository.save(userFromNeo);
 			tx.success();
-			
-			System.out.println("USER");
-	        System.out.println(UserFromNeo);
-			if(UserFromNeo.getEmail().equals(email) ) return "Transaction done successfully!";
-			return "Transaction failed";
-				
-        	}
-		
+        }
 		finally{
 			tx.close();
 		}
-    	
-    	
-    	
+		return true;
     }
     
   
@@ -120,7 +110,6 @@ public class UserController {
     }
     
 
-    
     @RequestMapping("/user/{email}/pending")
     public List<Group> getPendingGroupsOfUsers(@PathVariable String email){
     	
@@ -149,7 +138,7 @@ public class UserController {
     
     
     @RequestMapping(method = RequestMethod.POST,value="/user/{email}/")
-    public String updateUserGPSCoordinates(@PathVariable String email,
+    public boolean updateUserGPSCoordinates(@PathVariable String email,
     									   @RequestParam(value="lat", defaultValue="null") Double latitude, 
     									   @RequestParam(value="lon", defaultValue="null") Double longitude){
     	
@@ -158,14 +147,11 @@ public class UserController {
         
         Transaction tx = graphDatabaseService.beginTx();
 		try{
-			
-			System.out.println("Email received is:");
-			System.out.println(email);
 			User userFromNeo = userRepository.findByEmail(email);
 			if(userFromNeo == null){
-				System.out.println("Result of userFromNeo:");
-				System.out.println(userFromNeo);
-				return null;
+				tx.success();
+				tx.close();
+				return false;
 			}
 			
 			userFromNeo.setLatGPS(latitude);
@@ -178,105 +164,90 @@ public class UserController {
 		finally{
 			tx.close();
 		}
-		return "Updated user coordinates successfully";
+		return true;
     }
     
     
     @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/accept")
     public Group addContains(@PathVariable String email, @PathVariable Long groupId){
     	
+    	Group groupFromNeo;
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupId);
-
+        
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
+			User userFromNeo = userRepository.findByEmail(email);
+			groupFromNeo = groupRepository.findById(groupId);
+			if( userFromNeo == null || groupFromNeo == null){
+				tx.success();
+				tx.close();
+				return null;
+			}
 			
-			User UserFromNeo = userRepository.findByEmail(email);
-			Group GroupFromNeo = groupRepository.findById(groupId);
-			GroupFromNeo.removeUserPending(UserFromNeo);
-			GroupFromNeo.addUser(UserFromNeo);
-			groupRepository.save(GroupFromNeo);
-			
-			
-			tx.success();
-			
-			System.out.println("USER");
-	        System.out.println(UserFromNeo);
-			return GroupFromNeo;
-				
-        	}
-		
+			groupFromNeo.removeUserPending(userFromNeo);
+			groupFromNeo.addUser(userFromNeo);
+			groupRepository.save(groupFromNeo);
+			tx.success();				
+        }
 		finally{
 			tx.close();
 		}
+		return groupFromNeo;
     }
-    
     
     
     @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/refuse")
-    public Group removePending(@PathVariable String email, @PathVariable Long groupId){
+    public boolean removePending(@PathVariable String email, @PathVariable Long groupId){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupId);
-
+        
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			
-			User UserFromNeo = userRepository.findByEmail(email);
-			Group GroupFromNeo = groupRepository.findById(groupId);
-			System.out.println(GroupFromNeo);
-			System.out.println(UserFromNeo);
-			System.out.println(GroupFromNeo.removeUserPending(UserFromNeo));
-
-			groupRepository.save(GroupFromNeo);
-			
-			return GroupFromNeo;
-				
-        	}
-		
+			User userFromNeo = userRepository.findByEmail(email);
+			Group groupFromNeo = groupRepository.findById(groupId);
+		    if(userFromNeo == null || groupFromNeo == null){
+		    	tx.success();
+		    	tx.close();
+		    	return false;
+		    }
+	
+			groupFromNeo.removeUserPending(userFromNeo);
+		    groupRepository.save(groupFromNeo);
+		    tx.success();
+        }
 		finally{
 			tx.close();
 		}
+		return true;
     }
+   
     
-    
+   
+    /* This API shouldn't be needed! Can invite from group! 
     @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/invite")
     public Group addPending(@PathVariable String email, @PathVariable Long groupId){
     	
+    	Group groupFromNeo;
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        System.out.println("EMAIL");
-        System.out.println(email);
-        System.out.println("GROUP IDENTIFIER");
-        System.out.println(groupId);
 
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			
 			User UserFromNeo = userRepository.findByEmail(email);
-			Group GroupFromNeo = groupRepository.findById(groupId);
-			GroupFromNeo.addUserPending(UserFromNeo);
-			groupRepository.save(GroupFromNeo);
-			
+			groupFromNeo = groupRepository.findById(groupId);
+			groupFromNeo.addUserPending(UserFromNeo);
+			groupRepository.save(groupFromNeo);
 			tx.success();
-			
-			return GroupFromNeo;
-				
-        	}
-		
+        }
 		finally{
 			tx.close();
 		}
+		return groupFromNeo;
     }
+    */
 }

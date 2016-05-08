@@ -26,47 +26,53 @@ public class GroupContoller {
 	@Autowired
 	private ApplicationContext context;
     
+	//Return null if group doesn't exist. Else return list of user of group identified by id. 
     @RequestMapping("/group/{groupId}")
     public Set<User> getUsers(@PathVariable Long groupId) {
     	
+    	Group groupFromNeo;
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
 
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			
-			Group groupFromNeo = groupRepository.findById(groupId);
-			
-		    tx.success();
-			
-			return groupFromNeo.getContains();
-				
+			groupFromNeo = groupRepository.findById(groupId);
+			if( groupFromNeo == null){
+				tx.success();
+				tx.close();
+				return null;
+			}
+		    tx.success();				
         	}
 		
 		finally{
 			tx.close();
 		}
-    	
+		return groupFromNeo.getContains();    	
     }
     
+    //Returns -1 if can't find group, else returns number of users of a Group. 
     @RequestMapping("/group/{groupId}/count")
     public int getCountUsers(@PathVariable Long groupId) {
     	
+    	Group groupFromNeo;
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
 
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			
-			Group GroupFromNeo = groupRepository.findById(groupId);
-			
-			return GroupFromNeo.getContains().size();
-				
-        	}
-		
+			groupFromNeo = groupRepository.findById(groupId);
+			if( groupFromNeo == null){
+				tx.success();
+				tx.close();
+				return -1;
+			}
+        }
 		finally{
 			tx.close();
 		}
+		return groupFromNeo.getContains().size();
     	
     }
     
@@ -82,6 +88,7 @@ public class GroupContoller {
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
         long result = 0; 
         
+        //Should also directly add itself to GROUP
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			
@@ -133,8 +140,7 @@ public class GroupContoller {
 		finally{
 			tx.close();
 		}
-		
-		
+			
 		return invitedUsers;
     }
     

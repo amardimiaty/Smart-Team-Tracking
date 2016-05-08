@@ -17,37 +17,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BeaconController {
 	
-	
 	@Autowired
 	private ApplicationContext context;
     
     @RequestMapping("/beacon")
     public List<Beacon> getBeacon() {
-    	
+    	List<Beacon> result = new LinkedList<Beacon>();
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
 
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			
 			Iterable<Beacon> beacons = beaconRepository.findAll();
 			Iterator<Beacon> it = beacons.iterator();
 			tx.success();
-			List<Beacon> result = new LinkedList<Beacon>();
 			
-			while(it.hasNext()){
-				result.add(it.next());
-				
-				}
-			
-			return result;
-				
-        	}
+			while(it.hasNext())
+				result.add(it.next());				
+        }
 		
 		finally{
 			tx.close();
 		}
-    	
+		return result;	
     }
 
 }
