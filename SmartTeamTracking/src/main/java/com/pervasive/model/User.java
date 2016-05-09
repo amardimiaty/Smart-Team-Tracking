@@ -15,9 +15,10 @@ public class User {
 	private String name;
 	private String surname;
 	private String email;	//KEY
-	private String password;	
 	private Double latGPS;
 	private Double lonGPS;
+	private String authToken;
+	private String facebookId;
 	
 	@RelatedTo(type="IN_RANGE", direction=Direction.OUTGOING)
 	private @Fetch Beacon beacon;  
@@ -25,15 +26,31 @@ public class User {
 	@SuppressWarnings("unused")
 	private User(){}
 	
-	public User(String name, String surname, String email, String password) {
+	public User(String name, String surname, String email,String facebookId) {
 		super();
 		id = null;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
-		this.password = password;
+		this.facebookId = facebookId;
 	}
 	
+	public String getAuthToken() {
+		return authToken;
+	}
+
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
+	}
+
+	public String getFacebookId() {
+		return facebookId;
+	}
+
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -74,14 +91,6 @@ public class User {
 		this.email = email;
 	}
 	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
 	public Double getLatGPS() {
 		return latGPS;
 	}
@@ -97,14 +106,14 @@ public class User {
 	public void setLonGPS(Double longGPS) {
 		this.lonGPS = longGPS;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "User [ID=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", password="
-				+ password + ", latGPS=" + latGPS + ", lonGPS=" + lonGPS + ", beacon=" + beacon + "]";
+		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", latGPS=" + latGPS
+				+ ", lonGPS=" + lonGPS + ", authToken=" + authToken + ", facebookId=" + facebookId + ", beacon="
+				+ beacon + "]";
 	}
-	
-	
+
 	@Override
 	public boolean equals(Object other){
 	    if (other == null) return false;

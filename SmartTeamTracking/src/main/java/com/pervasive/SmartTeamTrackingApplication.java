@@ -42,14 +42,14 @@ public class SmartTeamTrackingApplication {
 	
 	public static void testUser(GraphDatabaseService graphDatabaseService, UserRepository userRepository,BeaconRepository beaconRepository,GroupRepository groupRepository){
 	
-		User stefano = new User("Stefano","Conoci","stefano.conoci@gmail.com","badpw");
+		User stefano = new User("Stefano","Conoci","stefano.conoci@gmail.com",null);
 		stefano.setLatGPS(20.0);
 		stefano.setLonGPS(44.2);
 		
-		User davide = new User("Davide","Meacci","davide.meacci@gmail.com","reallybadpw");
+		User davide = new User("Davide","Meacci","davide.meacci@gmail.com", null);
 		
-		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com","reallybadpw");
-		User chicco = new User("Chicco","qwerty","chicco@gmail.com","reallybadpw");
+		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com", null);
+		User chicco = new User("Chicco","qwerty","chicco@gmail.com", null);
 		Beacon b1 = new Beacon(56785l, "B2", 41.222d, 45.23d);
 		Beacon a1 = new Beacon(56786l, "A1", 31.222d, 45.23d);
 		Beacon a2 = new Beacon(56787l, "A2", 32.222d, 45.23d);
