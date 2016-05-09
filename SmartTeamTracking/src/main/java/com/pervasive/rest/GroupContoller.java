@@ -77,31 +77,43 @@ public class GroupContoller {
     }
     
  
-    //Creates a new group and returns group identifier. In case of error returns 0. 
+    //Creates a new group, adds group creator and returns group identifier. In case of error returns -1. 
     @RequestMapping(method = RequestMethod.POST,value="/group")
-    public long createGroup(@RequestParam(value="name", defaultValue="null") String name,
+    public long createGroup(@RequestParam(value ="email", defaultValue="null") String email,
+    						@RequestParam(value="name", defaultValue="null") String name,
     						@RequestParam(value="lat", defaultValue="0.0") double latitude,
     						@RequestParam(value="lon", defaultValue="0.0") double longitude,
     						@RequestParam(value="radius", defaultValue="30") int radius){
-    	
+       
+    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+       
         long result = 0; 
         
         //Should also directly add itself to GROUP
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			
+			User userFromNeo = userRepository.findByEmail(email);
+			if(userFromNeo == null){
+				tx.success();
+				tx.close();
+				return -1;			
+			}
+	
 			Group newGroup = new Group(name, latitude, longitude, radius);
+			newGroup.addUser(userFromNeo);
 			newGroup = groupRepository.save(newGroup);
 			
-			if(newGroup.getId() == null)
-				return 0;
+			if(newGroup.getId() == null){
+				tx.success();
+				tx.close();
+				return -1;
+			}
+			
 			result = newGroup.getId();
 			tx.success();
-				
-        	}
-		
+        }
 		finally{
 			tx.close();
 		}
