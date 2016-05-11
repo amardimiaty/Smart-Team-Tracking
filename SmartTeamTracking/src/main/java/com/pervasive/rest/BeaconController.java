@@ -1,8 +1,4 @@
 package com.pervasive.rest;
-import com.pervasive.model.Beacon;
-import com.pervasive.repository.BeaconRepository;
-
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.pervasive.model.Beacon;
+import com.pervasive.repository.BeaconRepository;
 
 @RestController
 public class BeaconController {

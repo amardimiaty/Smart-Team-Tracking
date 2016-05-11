@@ -10,12 +10,17 @@ import org.neo4j.io.fs.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pervasive.model.Beacon;
 import com.pervasive.model.Group;
 import com.pervasive.model.User;
 import com.pervasive.repository.BeaconRepository;
 import com.pervasive.repository.GroupRepository;
 import com.pervasive.repository.UserRepository;
+import com.pervasive.util.FacebookAuthData;
 
 @SpringBootApplication
 public class SmartTeamTrackingApplication {
@@ -40,6 +45,7 @@ public class SmartTeamTrackingApplication {
 		testUser(graphDatabaseService, userRepository, beaconRepository,groupRepository);
 	}
 	
+	
 	public static void testUser(GraphDatabaseService graphDatabaseService, UserRepository userRepository,BeaconRepository beaconRepository,GroupRepository groupRepository){
 	
 		User stefano = new User("Stefano","Conoci","stefano.conoci@gmail.com",null);
@@ -63,6 +69,22 @@ public class SmartTeamTrackingApplication {
 		
 		stefano.setBeacon(b1);
 		davide.setBeacon(b1);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		String authData = restTemplate.getForObject("https://graph.facebook.com/debug_token?input_token=EApUniJ4a9KcBAIdeyWUShpEvPejfhKJ5kAOhnQrm0sKfwHeY4iICyibaVhGqNMuCt94rSoFj2E4lO7TdXVokPcnugqzqoqZBt4yZBwgoQ9mKqBb8D2ZApntZAPDIS7xQuF67jNZCHZBjTyZA6HMWPmhFSAVbgcTExLCBpmZCIBYWTzj1vaH21hR3&access_token=1450842605155495%7CMFOOGXIcnTkmSGu1uXWGG6oeH_M", String.class);
+	
+		try {
+			
+		    ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode json = objectMapper.readTree(authData);
+			JsonNode jsonData = json.get("data");
+			FacebookAuthData facebookAuthData =objectMapper.treeToValue(jsonData, FacebookAuthData.class);
+			System.out.println(facebookAuthData);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		Transaction tx = graphDatabaseService.beginTx();
@@ -97,15 +119,19 @@ public class SmartTeamTrackingApplication {
 			System.out.println(groupFromNeo);
 			
 			System.out.println("Result from query getGroupsForUser");
-			Iterable<Group> iterableFromQuery = groupRepository.getGroupsforUser("stefano.conoci@gmail.com");
+			Iterable<Group> iterableFromQuery = groupRepository.getGroupsforUser(Long.valueOf(0));
 			Iterator<Group> it  = iterableFromQuery.iterator();
 			while( it.hasNext()){
 				Group currentGroup = it.next();
 				System.out.println(currentGroup);
-			}
+			}			
 			
 			User userFromQuery = userRepository.findByEmail("stefano.conoci@gmail.com");
 			System.out.println("Testing findByEmail");
+			System.out.println(userFromQuery);
+			
+			System.out.println("Testing findByID");
+			userFromQuery = userRepository.findById(0l);
 			System.out.println(userFromQuery);
 			
 			tx.success();

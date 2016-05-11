@@ -1,15 +1,7 @@
 package com.pervasive.rest;
-import com.pervasive.model.Beacon;
-import com.pervasive.model.Group;
-import com.pervasive.model.User;
-import com.pervasive.repository.BeaconRepository;
-import com.pervasive.repository.GroupRepository;
-import com.pervasive.repository.UserRepository;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
@@ -21,40 +13,53 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pervasive.model.Beacon;
+import com.pervasive.model.Group;
+import com.pervasive.model.User;
+import com.pervasive.repository.BeaconRepository;
+import com.pervasive.repository.GroupRepository;
+import com.pervasive.repository.UserRepository;
+import com.pervasive.util.FacebookUtils;
+
 @RestController
 public class UserController {
 
 	@Autowired
 	private ApplicationContext context;
     
-	//Returns null if can't find User 
+	
     @RequestMapping("/user")
-    public User findUser(@RequestParam(value="name", defaultValue="null") String name) {
+    public User authOrSignupUser(@RequestParam(value="token", defaultValue="null") String token,
+    			                 @RequestParam(value="facebookId", defaultValue="null") String facebookId,
+    						     @RequestParam(value="name", defaultValue="null") String name,
+						         @RequestParam(value="surname", defaultValue="null") String surname,
+						         @RequestParam(value="email", defaultValue="null") String email){
     	
-    	User userFromNeo;
-    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);    	
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-
-    	Transaction tx = graphDatabaseService.beginTx();
+        FacebookUtils facebookUtils = (FacebookUtils) context.getBean(FacebookUtils.class);
+        
+        User userFromNeo;
+        
+    	//Check if this user already signed up 
+        Transaction tx = graphDatabaseService.beginTx();
 		try{
-			userFromNeo = userRepository.findByName(name);
+			userFromNeo = userRepository.findByFacebookId(facebookId);
 			tx.success();
-		
-			if(userFromNeo == null) {
-				tx.close();
-				return null;
-			}				
-        }
+		}
 		finally{
 			tx.close();
 		}
-		return userFromNeo;
+		
+		if( userFromNeo == null)
+			 return facebookUtils.signupUser(token, name, surname, email);
+		else return facebookUtils.authUser(userFromNeo, token);
     }
     
     
     //Returns true if correctly executed, if can find either group or beacon returns false 
-    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{beaconIdentifier}")
-    public boolean addInRange(@PathVariable String email, @PathVariable Long beaconIdentifier){
+    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/{beaconIdentifier}")
+    public boolean addInRange(@PathVariable Long userId, @PathVariable Long beaconIdentifier){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
@@ -62,10 +67,10 @@ public class UserController {
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			User userFromNeo = userRepository.findByEmail(email);
+			User userFromNeo = userRepository.findById(userId);
 			Beacon beaconFromNeo = beaconRepository.findByBeaconIdentifier(beaconIdentifier);
 			
-			if(userFromNeo == null){
+			if(userFromNeo == null || beaconRepository == null){
 				tx.success();
 				tx.close();
 				return false;
@@ -83,8 +88,8 @@ public class UserController {
     }
     
   
-    @RequestMapping("/user/{email}/groups")
-    public List<Group> getGroupsOfUsers(@PathVariable String email){
+    @RequestMapping("/user/{userId}/groups")
+    public List<Group> getGroupsOfUsers(@PathVariable Long userId){
     	
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
@@ -93,7 +98,34 @@ public class UserController {
 
     	Transaction tx = graphDatabaseService.beginTx();
     	try{
-			Iterable<Group> iterableGroup = groupRepository.getGroupsforUser(email);
+			Iterable<Group> iterableGroup = groupRepository.getGroupsforUser(userId);
+			Iterator<Group> it = iterableGroup.iterator();
+			while (it.hasNext()){
+				Group g = it.next();
+				g.invalidContains();
+				g.invalidPending();
+				groupList.add(g);
+			}
+			tx.success();	
+        }
+		finally{
+			tx.close();
+		}
+		return groupList;
+    }
+  
+
+    @RequestMapping("/user/{userId}/pending")
+    public List<Group> getPendingGroupsOfUsers(@PathVariable Long userId){
+    	
+    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        
+        List<Group> groupList = new LinkedList<>();
+
+    	Transaction tx = graphDatabaseService.beginTx();
+    	try{
+			Iterable<Group> iterableGroup = groupRepository.getPendingGroupsForUser(userId);
 			Iterator<Group> it = iterableGroup.iterator();
 			while (it.hasNext()){
 				Group g = it.next();
@@ -109,36 +141,9 @@ public class UserController {
 		return groupList;
     }
     
-
-    @RequestMapping("/user/{email}/pending")
-    public List<Group> getPendingGroupsOfUsers(@PathVariable String email){
-    	
-    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
-        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-        
-        List<Group> groupList = new LinkedList<>();
-
-    	Transaction tx = graphDatabaseService.beginTx();
-    	try{
-			Iterable<Group> iterableGroup = groupRepository.getPendingGroupsForUser(email);
-			Iterator<Group> it = iterableGroup.iterator();
-			while (it.hasNext()){
-				Group g = it.next();
-				g.invalidContains();
-				g.invalidPending();
-				groupList.add(g);
-			}
-			tx.success();	
-        }
-		finally{
-			tx.close();
-		}
-		return groupList;
-    }
     
-    
-    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/")
-    public boolean updateUserGPSCoordinates(@PathVariable String email,
+    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/")
+    public boolean updateUserGPSCoordinates(@PathVariable Long userId,
     									   @RequestParam(value="lat", defaultValue="null") Double latitude, 
     									   @RequestParam(value="lon", defaultValue="null") Double longitude){
     	
@@ -147,7 +152,7 @@ public class UserController {
         
         Transaction tx = graphDatabaseService.beginTx();
 		try{
-			User userFromNeo = userRepository.findByEmail(email);
+			User userFromNeo = userRepository.findById(userId);
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
@@ -168,8 +173,8 @@ public class UserController {
     }
     
     
-    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/accept")
-    public Group addContains(@PathVariable String email, @PathVariable Long groupId){
+    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/{groupId}/accept")
+    public Group addContains(@PathVariable Long userId, @PathVariable Long groupId){
     	
     	Group groupFromNeo;
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
@@ -178,7 +183,7 @@ public class UserController {
         
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			User userFromNeo = userRepository.findByEmail(email);
+			User userFromNeo = userRepository.findById(userId);
 			groupFromNeo = groupRepository.findById(groupId);
 			if( userFromNeo == null || groupFromNeo == null){
 				tx.success();
@@ -198,8 +203,8 @@ public class UserController {
     }
     
     
-    @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/refuse")
-    public boolean removePending(@PathVariable String email, @PathVariable Long groupId){
+    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/{groupId}/refuse")
+    public boolean removePending(@PathVariable Long userId, @PathVariable Long groupId){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
@@ -207,7 +212,7 @@ public class UserController {
         
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
-			User userFromNeo = userRepository.findByEmail(email);
+			User userFromNeo = userRepository.findById(userId);
 			Group groupFromNeo = groupRepository.findById(groupId);
 		    if(userFromNeo == null || groupFromNeo == null){
 		    	tx.success();
@@ -225,7 +230,30 @@ public class UserController {
 		return true;
     }
    
+  //Returns null if can't find User. This is a demo rest call, to not be used in production. 
     
+  	/*@RequestMapping("/user")
+      public User findUser(@RequestParam(value="name", defaultValue="null") String name) {
+      	
+      	User userFromNeo;
+      	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+          GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+
+      	Transaction tx = graphDatabaseService.beginTx();
+  		try{
+  			userFromNeo = userRepository.findByName(name);
+  			tx.success();
+  		
+  			if(userFromNeo == null) {
+  				tx.close();
+  				return null;
+  			}				
+          }
+  		finally{
+  			tx.close();
+  		}
+  		return userFromNeo;
+      }*/ 
    
     /* This API shouldn't be needed! Can invite from group! 
     @RequestMapping(method = RequestMethod.POST,value="/user/{email}/{groupId}/invite")

@@ -11,10 +11,10 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 public class User {
 	
 	@GraphId
-	private Long id;
+	private Long id; //KEY
 	private String name;
 	private String surname;
-	private String email;	//KEY
+	private String email;	
 	private Double latGPS;
 	private Double lonGPS;
 	private String authToken;
@@ -114,19 +114,6 @@ public class User {
 				+ beacon + "]";
 	}
 
-	@Override
-	public boolean equals(Object other){
-	    if (other == null) return false;
-	    if (other == this) return true;
-	    if (!(other instanceof User))return false;
-	    User user = (User)other;
-	    if(this.email.equals(user.email)) return true;
-	    return false;
-	}
 	
-	@Override
-	public int hashCode() {
-	    return email.hashCode();
-	}
 	
 }
