@@ -3,6 +3,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,15 @@ public class BeaconController {
 	
 	@Autowired
 	private ApplicationContext context;
+	
+	static Logger log = Logger.getLogger(BeaconController.class.getSimpleName());
     
     @RequestMapping("/beacon")
     public List<Beacon> getBeacon() {
     	List<Beacon> result = new LinkedList<Beacon>();
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-
+        
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			Iterable<Beacon> beacons = beaconRepository.findAll();
@@ -38,6 +41,7 @@ public class BeaconController {
 		finally{
 			tx.close();
 		}
+    	log.info("Called /beacon resource. Returning "+result.toString());
 		return result;	
     }
 

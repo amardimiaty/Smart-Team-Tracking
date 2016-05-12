@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.io.fs.FileUtils;
@@ -26,10 +27,10 @@ import com.pervasive.util.FacebookAuthData;
 public class SmartTeamTrackingApplication {
 	
 	static ApplicationContext context;
+	static Logger log = Logger.getLogger(SmartTeamTrackingApplication.class.getSimpleName());
 	
 
 	public static void main(String[] args) {
-		
 		try {
 			FileUtils.deleteRecursively(new File("embeddedNeo4j.db"));
 		} catch (IOException e) {
@@ -42,6 +43,9 @@ public class SmartTeamTrackingApplication {
 		UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
 		BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
 		GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+		
+		log.info("Debugger working");
+		
 		testUser(graphDatabaseService, userRepository, beaconRepository,groupRepository);
 	}
 	

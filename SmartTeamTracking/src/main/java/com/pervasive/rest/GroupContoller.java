@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,13 @@ public class GroupContoller {
 	
 	@Autowired
 	private ApplicationContext context;
+	
+	static Logger log = Logger.getLogger(GroupContoller.class.getSimpleName());
+
     
 	//Return null if group doesn't exist. Else return list of user of group identified by id. 
     @RequestMapping("/group/{groupId}")
     public Set<User> getUsers(@PathVariable Long groupId) {
-    	
     	Group groupFromNeo;
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
@@ -41,6 +44,7 @@ public class GroupContoller {
 			if( groupFromNeo == null){
 				tx.success();
 				tx.close();
+		    	log.info("Called /group/"+groupId+" resource. Can't find group, returning null");
 				return null;
 			}
 		    tx.success();				
@@ -49,6 +53,7 @@ public class GroupContoller {
 		finally{
 			tx.close();
 		}
+    	log.info("Called /group/"+groupId+" resource. Returning "+groupFromNeo.getContains().toString());
 		return groupFromNeo.getContains();    	
     }
     
@@ -66,14 +71,15 @@ public class GroupContoller {
 			if( groupFromNeo == null){
 				tx.success();
 				tx.close();
+		    	log.info("Called /group/"+groupId+"/count resource. Can't find group, returning -1");
 				return -1;
 			}
         }
 		finally{
 			tx.close();
 		}
+    	log.info("Called /group/"+groupId+"/count resource. Returning "+ groupFromNeo.getContains().size());
 		return groupFromNeo.getContains().size();
-    	
     }
     
  
@@ -98,6 +104,7 @@ public class GroupContoller {
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
+				log.info("Called POST /group resource. Can't find user, returning -1");
 				return -1;			
 			}
 	
@@ -108,6 +115,7 @@ public class GroupContoller {
 			if(newGroup.getId() == null){
 				tx.success();
 				tx.close();
+				log.info("Called POST /group resource. Error in saving group, returning -1");
 				return -1;
 			}
 			
@@ -117,6 +125,7 @@ public class GroupContoller {
 		finally{
 			tx.close();
 		}
+		log.info("Called POST /group resource. Returning group identifier: "+result);
 		return result;
     }
     
@@ -134,9 +143,10 @@ public class GroupContoller {
         Transaction tx = graphDatabaseService.beginTx();
 		try{
 			Group groupFromNeo = groupRepository.findById(groupId);
-			if(groupFromNeo == null)
+			if(groupFromNeo == null){
+				log.info("Called POST /group/"+groupId+"/invite resource. Cant' find group, returning null");
 				return null;
-			
+			}
 			for(Long userId: users){
 				User userToAdd = userRepository.findById(userId);
 				if(userToAdd != null) {
@@ -152,7 +162,7 @@ public class GroupContoller {
 		finally{
 			tx.close();
 		}
-			
+		log.info("Called POST /group/"+groupId+"/invite resource. Returning "+invitedUsers.toString());
 		return invitedUsers;
     }
     

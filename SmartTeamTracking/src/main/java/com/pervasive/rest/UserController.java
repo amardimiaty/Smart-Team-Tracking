@@ -3,6 +3,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class UserController {
 
 	@Autowired
 	private ApplicationContext context;
+	
+	static Logger log = Logger.getLogger(UserController.class.getSimpleName());
+
     
 	
     @RequestMapping("/user")
@@ -40,6 +44,7 @@ public class UserController {
         FacebookUtils facebookUtils = (FacebookUtils) context.getBean(FacebookUtils.class);
         
         User userFromNeo;
+        User result;
         
     	//Check if this user already signed up 
         Transaction tx = graphDatabaseService.beginTx();
@@ -51,9 +56,16 @@ public class UserController {
 			tx.close();
 		}
 		
-		if( userFromNeo == null)
-			 return facebookUtils.signupUser(token, name, surname, email);
-		else return facebookUtils.authUser(userFromNeo, token);
+		if( userFromNeo == null){
+			 result = facebookUtils.signupUser(token, name, surname, email);
+			log.info("Called /user resource. Performed signup, returning user: "+result.toString());
+			 return result;
+		}
+		else{
+			result = facebookUtils.authUser(userFromNeo, token);
+			log.info("Called /user resource. Performed login, returning user: "+result.toString());
+			return result;
+		}
     }
     
     
@@ -70,7 +82,7 @@ public class UserController {
 			User userFromNeo = userRepository.findById(userId);
 			Beacon beaconFromNeo = beaconRepository.findByBeaconIdentifier(beaconIdentifier);
 			
-			if(userFromNeo == null || beaconRepository == null){
+			if(userFromNeo == null){
 				tx.success();
 				tx.close();
 				return false;
