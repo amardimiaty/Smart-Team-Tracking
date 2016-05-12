@@ -69,7 +69,7 @@ public class UserController {
     }
     
     
-    //Returns true if correctly executed, if can find either group or beacon returns false 
+    //Returns true if correctly executed, if can't find either group or beacon returns false 
     @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/{beaconIdentifier}")
     public boolean addInRange(@PathVariable Long userId, @PathVariable Long beaconIdentifier){
     	
@@ -85,6 +85,7 @@ public class UserController {
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
+				log.info("Called /user/"+userId+"/"+beaconIdentifier+" resource. Can't find either group or beacon, returning false");
 				return false;
 			}
 			
@@ -96,6 +97,7 @@ public class UserController {
 		finally{
 			tx.close();
 		}
+		log.info("Called /user/"+userId+"/"+beaconIdentifier+" resource. Returning true");
 		return true;
     }
     
@@ -123,6 +125,7 @@ public class UserController {
 		finally{
 			tx.close();
 		}
+		log.info("Called /user/"+userId+"/groups resource. Returning "+groupList.toString());
 		return groupList;
     }
   
@@ -150,6 +153,7 @@ public class UserController {
 		finally{
 			tx.close();
 		}
+		log.info("Called /user/"+userId+"/pending resource. Returning "+groupList.toString());
 		return groupList;
     }
     
@@ -168,6 +172,7 @@ public class UserController {
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
+				log.info("Called /user/"+userId+" resource. Returning false");
 				return false;
 			}
 			
@@ -181,6 +186,7 @@ public class UserController {
 		finally{
 			tx.close();
 		}
+		log.info("Called /user/"+userId+" resource. Returning true");
 		return true;
     }
     
@@ -200,6 +206,7 @@ public class UserController {
 			if( userFromNeo == null || groupFromNeo == null){
 				tx.success();
 				tx.close();
+				log.info("Called /user/"+userId+"/"+groupId+"/accept resource. Can't find neither user nor group, returning null");
 				return null;
 			}
 			
@@ -211,6 +218,7 @@ public class UserController {
 		finally{
 			tx.close();
 		}
+		log.info("Called /user/"+userId+"/"+groupId+"/accept resource. Returning "+groupFromNeo.toString());
 		return groupFromNeo;
     }
     
@@ -229,7 +237,9 @@ public class UserController {
 		    if(userFromNeo == null || groupFromNeo == null){
 		    	tx.success();
 		    	tx.close();
+				log.info("Called /user/"+userId+"/"+groupId+"/refuse resource. Can't find neither user nor group, returning false");
 		    	return false;
+		    	
 		    }
 	
 			groupFromNeo.removeUserPending(userFromNeo);
@@ -239,6 +249,8 @@ public class UserController {
 		finally{
 			tx.close();
 		}
+		log.info("Called /user/"+userId+"/"+groupId+"/refuse resource. Returning true");
+
 		return true;
     }
    
