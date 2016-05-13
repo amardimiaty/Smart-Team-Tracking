@@ -129,28 +129,29 @@ public class GroupContoller {
 		return result;
     }
     
-    // Invite users in a group identified by id. List of users is sent as a list of userId in the body. 
-    // Returns null if can't find group, else returns the list of users id's successfully invited. 
+    // Invite users in a group identified by groupId. List of users is sent as a list of facebookId in the body. 
+    // Returns null if can't find group, else returns the list of users facebookId's successfully invited. 
     @RequestMapping(method = RequestMethod.POST,value="/group/{groupId}/invite", consumes = "application/json")
-    public List<Long> inviteUserToGroup(@PathVariable Long groupId, @RequestBody List<Long> users){
+    public List<String> inviteUserToGroup(@PathVariable Long groupId, @RequestBody List<String> fbUsers){
     	
     	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
         UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
-    	
-    	List<Long> invitedUsers = new LinkedList<Long>();
-    	
+  
+    	List<String> invitedUsers = new LinkedList<String>();  	
         Transaction tx = graphDatabaseService.beginTx();
 		try{
 			Group groupFromNeo = groupRepository.findById(groupId);
 			if(groupFromNeo == null){
 				log.info("Called POST /group/"+groupId+"/invite resource. Cant' find group, returning null");
+				tx.success();
+				tx.close();
 				return null;
 			}
-			for(Long userId: users){
-				User userToAdd = userRepository.findById(userId);
+			for(String facebookId: fbUsers){
+				User userToAdd = userRepository.findByFacebookId(facebookId);
 				if(userToAdd != null) {
-					invitedUsers.add(userToAdd.getId());
+					invitedUsers.add(userToAdd.getFacebookId());
 					groupFromNeo.addUserPending(userToAdd);
 				}
 			}

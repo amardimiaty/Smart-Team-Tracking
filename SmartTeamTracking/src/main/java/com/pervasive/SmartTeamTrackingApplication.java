@@ -43,7 +43,6 @@ public class SmartTeamTrackingApplication {
 		UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
 		BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
 		GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
-		
 		log.info("Debugger working");
 		
 		testUser(graphDatabaseService, userRepository, beaconRepository,groupRepository);
@@ -73,22 +72,6 @@ public class SmartTeamTrackingApplication {
 		
 		stefano.setBeacon(b1);
 		davide.setBeacon(b1);
-		
-		RestTemplate restTemplate = new RestTemplate();
-		String authData = restTemplate.getForObject("https://graph.facebook.com/debug_token?input_token=EApUniJ4a9KcBAIdeyWUShpEvPejfhKJ5kAOhnQrm0sKfwHeY4iICyibaVhGqNMuCt94rSoFj2E4lO7TdXVokPcnugqzqoqZBt4yZBwgoQ9mKqBb8D2ZApntZAPDIS7xQuF67jNZCHZBjTyZA6HMWPmhFSAVbgcTExLCBpmZCIBYWTzj1vaH21hR3&access_token=1450842605155495%7CMFOOGXIcnTkmSGu1uXWGG6oeH_M", String.class);
-	
-		try {
-			
-		    ObjectMapper objectMapper = new ObjectMapper();
-			JsonNode json = objectMapper.readTree(authData);
-			JsonNode jsonData = json.get("data");
-			FacebookAuthData facebookAuthData =objectMapper.treeToValue(jsonData, FacebookAuthData.class);
-			System.out.println(facebookAuthData);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		
 		Transaction tx = graphDatabaseService.beginTx();
