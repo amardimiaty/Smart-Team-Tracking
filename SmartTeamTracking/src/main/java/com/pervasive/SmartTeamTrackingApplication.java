@@ -67,8 +67,6 @@ public class SmartTeamTrackingApplication {
 		
 		
 		Group froganGroup = new Group("Vegan Group",40.2,45.2,2);
-		froganGroup.addUser(stefano);
-		froganGroup.addUser(davide);
 		
 		stefano.setBeacon(b1);
 		davide.setBeacon(b1);
@@ -77,8 +75,8 @@ public class SmartTeamTrackingApplication {
 		Transaction tx = graphDatabaseService.beginTx();
 		try{
 			System.out.println("Saving users");
-			userRepository.save(stefano);
-			userRepository.save(davide);
+			stefano = userRepository.save(stefano);
+			davide = userRepository.save(davide);
 			userRepository.save(angelo);
 			userRepository.save(chicco);
 			
@@ -88,6 +86,9 @@ public class SmartTeamTrackingApplication {
 			beaconRepository.save(a2);
 			beaconRepository.save(a3);
 			beaconRepository.save(a4);
+			
+			froganGroup.addUser(stefano);
+			froganGroup.addUser(davide);
 			
 			groupRepository.save(froganGroup);
 			
