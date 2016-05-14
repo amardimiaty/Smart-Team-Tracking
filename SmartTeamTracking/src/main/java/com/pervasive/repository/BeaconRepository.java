@@ -7,12 +7,9 @@ import com.pervasive.model.Beacon;
 
 public interface BeaconRepository extends CrudRepository<Beacon, String>{
 	
-	Beacon findByName(String name);
+	Beacon findByName(String name);	
 	
-	Beacon findByBeaconIdentifier(Long beaconIdentifier);
-	
-	
-	@Query("MATCH (beacon:Beacon) RETURN beacon")
-	Iterable<Beacon> getBeacons();
+	@Query("MATCH (n:Beacon) WHERE n.major={0} AND n.minor={1} RETURN n")
+	Beacon findByMajorMinor(Integer major, Integer minor);
 
 }

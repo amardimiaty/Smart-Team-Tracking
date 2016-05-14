@@ -59,17 +59,17 @@ public class SmartTeamTrackingApplication {
 		
 		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com", null);
 		User chicco = new User("Chicco","qwerty","chicco@gmail.com", null);
-		Beacon b1 = new Beacon(56785l, "B2", 41.222d, 45.23d);
-		Beacon a1 = new Beacon(56786l, "A1", 31.222d, 45.23d);
-		Beacon a2 = new Beacon(56787l, "A2", 32.222d, 45.23d);
-		Beacon a3 = new Beacon(56788l, "A3", 33.222d, 45.23d);
-		Beacon a4 = new Beacon(56789l, "A4", 34.222d, 45.23d);
+		Beacon b2 = new Beacon(777,1, "B2", 41.222d, 45.23d);
+		Beacon a1 = new Beacon(777,2, "A1", 31.222d, 45.23d);
+		Beacon a2 = new Beacon(777,3, "A2", 32.222d, 45.23d);
+		Beacon a3 = new Beacon(777,4, "A3", 33.222d, 45.23d);
+		Beacon a4 = new Beacon(777,5, "A4", 34.222d, 45.23d);
 		
 		
 		Group froganGroup = new Group("Vegan Group",40.2,45.2,2);
 		
-		stefano.setBeacon(b1);
-		davide.setBeacon(b1);
+		stefano.setBeacon(b2);
+		davide.setBeacon(b2);
 		
 		
 		Transaction tx = graphDatabaseService.beginTx();
@@ -81,7 +81,7 @@ public class SmartTeamTrackingApplication {
 			userRepository.save(chicco);
 			
 			System.out.println("Saving beacon");
-			beaconRepository.save(b1);
+			beaconRepository.save(b2);
 			beaconRepository.save(a1);
 			beaconRepository.save(a2);
 			beaconRepository.save(a3);
@@ -121,6 +121,10 @@ public class SmartTeamTrackingApplication {
 			System.out.println("Testing findByID");
 			userFromQuery = userRepository.findById(0l);
 			System.out.println(userFromQuery);
+			
+			System.out.println("Testing findByMajorMinor");
+			beaconFromNeo = beaconRepository.findByMajorMinor(777, 1);
+			System.out.println(beaconFromNeo);
 			
 			tx.success();
 		}

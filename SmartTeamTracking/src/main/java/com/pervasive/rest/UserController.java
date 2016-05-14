@@ -30,8 +30,6 @@ public class UserController {
 	
 	static Logger log = Logger.getLogger(UserController.class.getSimpleName());
 
-    
-	
     @RequestMapping("/user")
     public User authOrSignupUser(@RequestParam(value="token", defaultValue="null") String token,
     			                 @RequestParam(value="facebookId", defaultValue="null") String facebookId,
@@ -70,8 +68,8 @@ public class UserController {
     
     
     //Returns true if correctly executed, if can't find either group or beacon returns false 
-    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/{beaconIdentifier}")
-    public boolean addInRange(@PathVariable Long userId, @PathVariable Long beaconIdentifier){
+    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/{major}/{minor}")
+    public boolean addInRange(@PathVariable Long userId, @PathVariable Integer major, @PathVariable Integer minor){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
@@ -80,12 +78,12 @@ public class UserController {
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			User userFromNeo = userRepository.findById(userId);
-			Beacon beaconFromNeo = beaconRepository.findByBeaconIdentifier(beaconIdentifier);
+			Beacon beaconFromNeo = beaconRepository.findByMajorMinor(major,minor);
 			
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
-				log.info("Called /user/"+userId+"/"+beaconIdentifier+" resource. Can't find either group or beacon, returning false");
+				log.info("Called /user/"+userId+"/"+major+"/"+minor+" resource. Can't find either group or beacon, returning false");
 				return false;
 			}
 			
@@ -97,7 +95,7 @@ public class UserController {
 		finally{
 			tx.close();
 		}
-		log.info("Called /user/"+userId+"/"+beaconIdentifier+" resource. Returning true");
+		log.info("Called /user/"+userId+"/"+major+"/"+minor+" resource. Returning true");
 		return true;
     }
     
@@ -255,7 +253,7 @@ public class UserController {
     }
    
   //Returns null if can't find User. This is a demo rest call, to not be used in production. 
-    
+ 
   	/*@RequestMapping("/user")
       public User findUser(@RequestParam(value="name", defaultValue="null") String name) {
       	
