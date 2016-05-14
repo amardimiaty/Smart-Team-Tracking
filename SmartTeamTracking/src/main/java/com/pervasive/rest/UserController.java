@@ -156,7 +156,7 @@ public class UserController {
     }
     
     
-    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/")
+    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}")
     public boolean updateUserGPSCoordinates(@PathVariable Long userId,
     									   @RequestParam(value="lat", defaultValue="null") Double latitude, 
     									   @RequestParam(value="lon", defaultValue="null") Double longitude){
