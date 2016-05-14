@@ -83,7 +83,7 @@ public class UserController {
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
-				log.info("Called /user/"+userId+"/"+major+"/"+minor+" resource. Can't find either group or beacon, returning false");
+				log.info("Called /user/"+userId+"/"+major+"/"+minor+" resource. Can't find either user or beacon, returning false");
 				return false;
 			}
 			
