@@ -9,6 +9,7 @@ import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -156,26 +157,24 @@ public class UserController {
     }
     
     
-    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}")
-    public boolean updateUserGPSCoordinates(@PathVariable Long userId,
-    									   @RequestParam(value="lat", defaultValue="null") Double latitude, 
-    									   @RequestParam(value="lon", defaultValue="null") Double longitude){
+    @RequestMapping(method = RequestMethod.POST,value="/user",consumes = "application/json")
+    public boolean updateUserGPSCoordinates(@RequestBody User user ){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
         
         Transaction tx = graphDatabaseService.beginTx();
 		try{
-			User userFromNeo = userRepository.findById(userId);
+			User userFromNeo = userRepository.findById(user.getId());
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
-				log.info("Called /user/"+userId+" resource. Returning false");
+				log.info("Called /user/"+user.getId()+" resource. Returning false");
 				return false;
 			}
 			
-			userFromNeo.setLatGPS(latitude);
-			userFromNeo.setLonGPS(longitude);
+			userFromNeo.setLatGPS(user.getLatGPS());
+			userFromNeo.setLonGPS(user.getLonGPS());
 			userRepository.save(userFromNeo);
 			
 			tx.success();
@@ -184,7 +183,7 @@ public class UserController {
 		finally{
 			tx.close();
 		}
-		log.info("Called /user/"+userId+" resource. Returning true");
+		log.info("Called /user/"+user.getId()+" resource. Returning true");
 		return true;
     }
     
