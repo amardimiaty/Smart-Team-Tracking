@@ -245,10 +245,46 @@ public class UserController {
 		finally{
 			tx.close();
 		}
-		log.info("Called /user/"+userId+"/"+groupId+"/refuse resource. Returning true");
+		log.info("Called POST /user/"+userId+"/"+groupId+"/refuse resource. Returning true, removed pending.");
 
 		return true;
     }
+    
+    @RequestMapping(method = RequestMethod.DELETE,value="/user/{userId}/{groupId}")
+    public boolean removeUserFromGroup(@PathVariable Long userId, @PathVariable Long groupId){
+    	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
+    	GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        
+    	Transaction tx = graphDatabaseService.beginTx();
+		try{
+			User userFromNeo = userRepository.findById(userId);
+			Group groupFromNeo = groupRepository.findById(groupId);
+		    if(userFromNeo == null || groupFromNeo == null){
+		    	tx.success();
+		    	tx.close();
+				log.info("Called DELETE /user/"+userId+"/"+groupId+". Can't find neither user nor group, returning false");
+		    	return false;
+		    }
+	
+			groupFromNeo.removeUser(userFromNeo);
+		    groupRepository.save(groupFromNeo);
+
+			//If group is empty and has no pending users, delete it from database. 
+			if(groupFromNeo.getPending().size() == 0 && groupFromNeo.getContains().size() == 0){
+				groupRepository.delete(groupFromNeo);
+				log.info("Called DELETE /user/"+userId+"/"+groupId+" resource. Returning true, deleted user from group. Group was also deleted");
+			}
+			else log.info("Called DELETE /user/"+userId+"/"+groupId+" resource. Returning true, deleted user from group.");
+		    tx.success();
+        }
+		finally{
+			tx.close();
+		}
+		return true;
+    }
+    
+    
    
   //Returns null if can't find User. This is a demo rest call, to not be used in production. 
  
