@@ -163,7 +163,7 @@ public class UserController {
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
         
-        Transaction tx = graphDatabaseService.beginTx();
+        Transaction tx = graphDatabaseService.beginTx();        
 		try{
 			User userFromNeo = userRepository.findById(user.getId());
 			if(userFromNeo == null){
@@ -172,7 +172,6 @@ public class UserController {
 				log.info("Called /user/"+user.getId()+" resource. Returning false");
 				return false;
 			}
-			
 			userFromNeo.setLatGPS(user.getLatGPS());
 			userFromNeo.setLonGPS(user.getLonGPS());
 			userRepository.save(userFromNeo);
@@ -183,7 +182,7 @@ public class UserController {
 		finally{
 			tx.close();
 		}
-		log.info("Called /user/"+user.getId()+" resource. Returning true");
+		log.info("Called /user/"+user.getId()+" resource. Returning true, setting latitude to "+user.getLatGPS()+" and longitude to "+user.getLonGPS());
 		return true;
     }
     
