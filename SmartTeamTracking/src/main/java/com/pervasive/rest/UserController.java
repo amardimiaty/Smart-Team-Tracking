@@ -88,6 +88,12 @@ public class UserController {
 				return false;
 			}
 			
+			if(beacon.getMajor() == null || beacon.getMinor() == null){
+				tx.success();
+				tx.close();
+				log.info("Called /user/"+userId+"/beacon resource. This beacon major and minor are not registered in the database, returning false");
+
+			}
 			if(beaconFromNeo == null){
 				userFromNeo.setBeacon(null);
 				log.info("Called /user/"+userId+"/beacon resource. Setting user beacon to nulll, returning true");
