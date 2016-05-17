@@ -8,11 +8,17 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pervasive.model.Beacon;
+import com.pervasive.model.User;
 import com.pervasive.repository.BeaconRepository;
+import com.pervasive.repository.UserRepository;
+import com.pervasive.util.FacebookUtils;
 
 @RestController
 public class BeaconController {
@@ -44,5 +50,42 @@ public class BeaconController {
     	log.info("Called /beacon resource. Returning "+result.toString());
 		return result;	
     }
+    
+    
+    @RequestMapping(method = RequestMethod.POST, value="/beacon")
+    public String addBeacon(@RequestBody Beacon beacon){
+    	
+    	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        
+        
+        Beacon beaconFromNeo;
+
+        
+    	//Check if this beacon is already existing
+        Transaction tx = graphDatabaseService.beginTx();
+		try{
+			beaconFromNeo = beaconRepository.findByMajorMinor(beacon.getMajor(), beacon.getMinor());
+			tx.success();
+		}
+		finally{
+			tx.close();
+		}
+		
+		if( beaconFromNeo == null){
+			
+			 beaconRepository.save(beacon);
+			log.info("Called /beacon POST resource. Added beacon, returning True");
+			 return "True";
+		}
+		else{
+			log.info("Called /beacon POST resource. Beacon was already existing, returning False");
+			return "False";
+		}
+    }
+    
+    
+    
+    
 
 }
