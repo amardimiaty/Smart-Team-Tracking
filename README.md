@@ -7,6 +7,7 @@ Users can simply create their own group, identified by a location and a radius, 
 ## Technologies used 
 
 How this works?
+
 The main used technologies are:
 
 Estimote
