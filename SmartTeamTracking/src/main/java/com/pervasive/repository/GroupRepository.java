@@ -18,3 +18,6 @@ public interface GroupRepository extends CrudRepository<Group, String>{
 	Iterable<Group> getPendingGroupsForUser(Long id);
 		
 }
+
+
+

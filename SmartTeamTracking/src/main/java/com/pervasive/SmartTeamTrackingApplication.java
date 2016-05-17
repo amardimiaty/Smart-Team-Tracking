@@ -11,17 +11,13 @@ import org.neo4j.io.fs.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pervasive.model.Beacon;
 import com.pervasive.model.Group;
 import com.pervasive.model.User;
 import com.pervasive.repository.BeaconRepository;
 import com.pervasive.repository.GroupRepository;
 import com.pervasive.repository.UserRepository;
-import com.pervasive.util.FacebookAuthData;
 
 @SpringBootApplication
 public class SmartTeamTrackingApplication {

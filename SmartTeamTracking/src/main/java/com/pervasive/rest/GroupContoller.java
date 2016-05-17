@@ -87,8 +87,8 @@ public class GroupContoller {
     @RequestMapping(method = RequestMethod.POST,value="/group")
     public long createGroup(@RequestParam(value ="userId", defaultValue="null") Long userId,
     						@RequestParam(value="name", defaultValue="null") String name,
-    						@RequestParam(value="lat", defaultValue="0.0") double latitude,
-    						@RequestParam(value="lon", defaultValue="0.0") double longitude,
+    						@RequestParam(value="lat", defaultValue="null") Double latitude,
+    						@RequestParam(value="lon", defaultValue="null") Double longitude,
     						@RequestParam(value="radius", defaultValue="30") int radius){
        
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);

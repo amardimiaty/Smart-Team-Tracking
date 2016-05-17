@@ -29,7 +29,7 @@ public class Group {
 	@SuppressWarnings("unused")
 	private Group(){}
 	
-	public Group(String name, double latCenter, double lonCenter, int radius) {
+	public Group(String name, Double latCenter, Double lonCenter, int radius) {
 		super();
 		id = null;
 		this.name = name;
@@ -78,16 +78,16 @@ public class Group {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public double getLatCenter() {
+	public Double getLatCenter() {
 		return latCenter;
 	}
-	public void setLatCenter(double latCenter) {
+	public void setLatCenter(Double latCenter) {
 		this.latCenter = latCenter;
 	}
-	public double getLongCenter() {
+	public Double getLongCenter() {
 		return lonCenter;
 	}
-	public void setLongCenter(double longCenter) {
+	public void setLongCenter(Double longCenter) {
 		this.lonCenter = longCenter;
 	}
 	public int getRadius() {
