@@ -99,7 +99,7 @@ public class SmartTeamTrackingApplication {
 			System.out.println(davideFromNeo.toString());
 			
 			System.out.println("Retrieving beacon");
-			Beacon beaconFromNeo = beaconRepository.findByName("B2");
+			Beacon beaconFromNeo = beaconRepository.findByName("Green Room");
 			System.out.println(beaconFromNeo.toString());
 			
 			System.out.println("Retrieving group");
@@ -122,9 +122,6 @@ public class SmartTeamTrackingApplication {
 			userFromQuery = userRepository.findById(0l);
 			System.out.println(userFromQuery);
 			
-			System.out.println("Testing findByMajorMinor");
-			beaconFromNeo = beaconRepository.findByMajorMinor(777, 1);
-			System.out.println(beaconFromNeo);
 			
 			tx.success();
 		}
