@@ -10,18 +10,18 @@ How this works?
 
 The main used technologies are:
 
-+**Estimote**
++ **Estimote**
 providing a low-energy bluetooth device for indoor positioning
 http://estimote.com/ https://www.bluetooth.com/
 
-+**Global Positioning System (GPS)**
++ **Global Positioning System (GPS)**
 http://www.gps.gov/
 
-+**Neo4j**
++ **Neo4j**
 a non-relational database for social-network relationship
 http://neo4j.com/
 
-+**Spring**
++ **Spring**
 a framework for simple,fast, flexible and portable development
 https://spring.io/
 
