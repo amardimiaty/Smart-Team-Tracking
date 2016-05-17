@@ -69,8 +69,8 @@ public class UserController {
     
     
     //Returns true if correctly executed, if can't find either group or beacon returns false 
-    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/{major}/{minor}")
-    public boolean addInRange(@PathVariable Long userId, @PathVariable Integer major, @PathVariable Integer minor){
+    @RequestMapping(method = RequestMethod.POST,value="/user/{userId}/beacon", consumes = "application/json")
+    public boolean addInRange(@PathVariable Long userId, @RequestBody Beacon beacon){
     	
     	UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
@@ -79,24 +79,30 @@ public class UserController {
     	Transaction tx = graphDatabaseService.beginTx();
 		try{
 			User userFromNeo = userRepository.findById(userId);
-			Beacon beaconFromNeo = beaconRepository.findByMajorMinor(major,minor);
+			Beacon beaconFromNeo = beaconRepository.findByMajorMinor(beacon.getMajor(),beacon.getMinor());
 			
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
-				log.info("Called /user/"+userId+"/"+major+"/"+minor+" resource. Can't find either user or beacon, returning false");
+				log.info("Called /user/"+userId+"/beacon resource. Can't find user, returning false");
 				return false;
 			}
 			
-			//This also covers the case in which the beacon is null. 
-			userFromNeo.setBeacon(beaconFromNeo);
+			if(beaconFromNeo == null){
+				userFromNeo.setBeacon(null);
+				log.info("Called /user/"+userId+"/beacon resource. Setting user beacon to nulll, returning true");
+			}
+			else{
+				userFromNeo.setBeacon(beaconFromNeo);
+				log.info("Called /user/"+userId+"/beacon resource. Setting user beacon to "+beaconFromNeo.toString()+" , returning true");
+
+			}
 			userRepository.save(userFromNeo);
 			tx.success();
         }
 		finally{
 			tx.close();
 		}
-		log.info("Called /user/"+userId+"/"+major+"/"+minor+" resource. Returning true");
 		return true;
     }
     
