@@ -81,6 +81,7 @@ public class UserController {
 			User userFromNeo = userRepository.findById(userId);
 			Beacon beaconFromNeo = beaconRepository.findByMajorMinor(beacon.getMajor(),beacon.getMinor());
 			
+			log.info("DEBUG: beacon received = "+beacon.toString());
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
@@ -96,7 +97,7 @@ public class UserController {
 			}
 			if(beaconFromNeo == null){
 				userFromNeo.setBeacon(null);
-				log.info("Called /user/"+userId+"/beacon resource. Setting user beacon to nulll, returning true");
+				log.info("Called /user/"+userId+"/beacon resource. Setting user beacon to null, returning true");
 			}
 			else{
 				userFromNeo.setBeacon(beaconFromNeo);
