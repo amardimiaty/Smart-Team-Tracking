@@ -81,7 +81,6 @@ public class UserController {
 			User userFromNeo = userRepository.findById(userId);
 			Beacon beaconFromNeo = beaconRepository.findByMajorMinor(beacon.getMajor(),beacon.getMinor());
 			
-			log.info("DEBUG: beacon received = "+beacon.toString());
 			if(userFromNeo == null){
 				tx.success();
 				tx.close();
@@ -89,21 +88,24 @@ public class UserController {
 				return false;
 			}
 			
-			if(beacon.getMajor() == null || beacon.getMinor() == null){
+			if(beacon.getMajor() == null || beacon.getMinor() == null){ // Major and minor are null beacuse users wants to set beacon to null
+				userFromNeo.setBeacon(null);
+				userRepository.save(userFromNeo);
 				tx.success();
 				tx.close();
-				log.info("Called /user/"+userId+"/beacon resource. This beacon major and minor are not registered in the database, returning false");
-
-			}
-			if(beaconFromNeo == null){
-				userFromNeo.setBeacon(null);
 				log.info("Called /user/"+userId+"/beacon resource. Setting user beacon to null, returning true");
+				return true;
 			}
-			else{
-				userFromNeo.setBeacon(beaconFromNeo);
-				log.info("Called /user/"+userId+"/beacon resource. Setting user beacon to "+beaconFromNeo.toString()+" , returning true");
-
+			
+			if(beaconFromNeo == null){  //Beacon is different from null but I can't find it 
+				tx.success();
+				tx.close();
+				log.info("Called /user/"+userId+"/beacon resource. Beacon received: "+beacon.toString()+" isn't registered, returning false");
+				return false;
 			}
+			
+			userFromNeo.setBeacon(beaconFromNeo);
+			log.info("Called /user/"+userId+"/beacon resource. Setting user beacon to "+beaconFromNeo.toString()+" , returning true");
 			userRepository.save(userFromNeo);
 			tx.success();
         }
