@@ -33,10 +33,10 @@ https://spring.io/
 
 As you can see from the picture, the main components of the project are:
 
-Beacons
-Client (Android)
-Server
-Database (Embedded)
++ **Beacons**
++ **Client (Android)**
++ **Server**
++ **Database (Embedded Neo4j)**
 
 When the Android device where the application is installed comes near a beacon, it will retrieve the beacon’s ID; after this, the Android Client will contact the Server, notifying the association Client-Beacon by the Server REST API. Finally, after getting this request, the Server will save this association in the Embedded Neo4j database, notifying the Android Client when the operation is completed.
 In addiction to this one, in the other parts of the application we have just other simple Client-Server-Database interactions, like the last part of the one shown before (3-4-5-6).
