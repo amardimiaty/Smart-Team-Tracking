@@ -59,9 +59,9 @@ public class SmartTeamTrackingApplication {
 		
 		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com", null);
 		User chicco = new User("Chicco","qwerty","chicco@gmail.com", null);
-		Beacon b2 = new Beacon(777,1, "B2", 41.222d, 45.23d);
-		Beacon a1 = new Beacon(777,2, "A1", 31.222d, 45.23d);
-		Beacon a2 = new Beacon(777,3, "A2", 32.222d, 45.23d);
+		Beacon b2 = new Beacon(30781,5475, "Green Room", 41.222d, 45.23d);
+		Beacon a1 = new Beacon(23082,20505, "Purple Room", 31.222d, 45.23d);
+		Beacon a2 = new Beacon(49546,41588, "Blue Room", 32.222d, 45.23d);
 		Beacon a3 = new Beacon(777,4, "A3", 33.222d, 45.23d);
 		Beacon a4 = new Beacon(777,5, "A4", 34.222d, 45.23d);
 		
