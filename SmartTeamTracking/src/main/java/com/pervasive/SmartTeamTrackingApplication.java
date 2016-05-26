@@ -11,17 +11,13 @@ import org.neo4j.io.fs.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pervasive.model.Beacon;
 import com.pervasive.model.Group;
 import com.pervasive.model.User;
 import com.pervasive.repository.BeaconRepository;
 import com.pervasive.repository.GroupRepository;
 import com.pervasive.repository.UserRepository;
-import com.pervasive.util.FacebookAuthData;
 
 @SpringBootApplication
 public class SmartTeamTrackingApplication {
@@ -59,9 +55,10 @@ public class SmartTeamTrackingApplication {
 		
 		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com", null);
 		User chicco = new User("Chicco","qwerty","chicco@gmail.com", null);
-		Beacon b2 = new Beacon(777,1, "B2", 41.222d, 45.23d);
-		Beacon a1 = new Beacon(777,2, "A1", 31.222d, 45.23d);
-		Beacon a2 = new Beacon(777,3, "A2", 32.222d, 45.23d);
+		
+		Beacon b2 = new Beacon(30781,5475, "DIAG-A4", 41.890715, 12.503897);   //GREEN BEACON -> A4
+		Beacon a1 = new Beacon(23082,20505, "DIAG-Study room", 41.890594, 12.503956); //PURPLE BEACON -> Student's Room
+		Beacon a2 = new Beacon(49546,41588, "DIAG-A1", 41.890867, 12.503806);   //BLUE BEACON -> A1 
 		Beacon a3 = new Beacon(777,4, "A3", 33.222d, 45.23d);
 		Beacon a4 = new Beacon(777,5, "A4", 34.222d, 45.23d);
 		
@@ -98,10 +95,6 @@ public class SmartTeamTrackingApplication {
 			User davideFromNeo = userRepository.findByName("Davide");
 			System.out.println(davideFromNeo.toString());
 			
-			System.out.println("Retrieving beacon");
-			Beacon beaconFromNeo = beaconRepository.findByName("B2");
-			System.out.println(beaconFromNeo.toString());
-			
 			System.out.println("Retrieving group");
 			Group groupFromNeo = groupRepository.findByName("Vegan Group");
 			System.out.println(groupFromNeo);
@@ -122,9 +115,6 @@ public class SmartTeamTrackingApplication {
 			userFromQuery = userRepository.findById(0l);
 			System.out.println(userFromQuery);
 			
-			System.out.println("Testing findByMajorMinor");
-			beaconFromNeo = beaconRepository.findByMajorMinor(777, 1);
-			System.out.println(beaconFromNeo);
 			
 			tx.success();
 		}
