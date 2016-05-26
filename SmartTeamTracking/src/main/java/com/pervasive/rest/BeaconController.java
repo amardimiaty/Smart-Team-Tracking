@@ -11,14 +11,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pervasive.model.Beacon;
-import com.pervasive.model.User;
 import com.pervasive.repository.BeaconRepository;
-import com.pervasive.repository.UserRepository;
-import com.pervasive.util.FacebookUtils;
 
 @RestController
 public class BeaconController {
