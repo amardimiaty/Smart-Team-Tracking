@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pervasive.model.Beacon;
@@ -76,6 +77,39 @@ public class BeaconController {
 		}
 		else{
 			log.info("Called /beacon POST resource. Beacon was already existing, returning False");
+			return "False";
+		}
+    }
+    
+    
+    @RequestMapping(method = RequestMethod.POST, value="/beacon/delete")
+    public String addBeacon(@RequestParam(value="id", defaultValue="null") Long beaconID){
+    	
+    	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
+        GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
+        
+        
+        Beacon beaconFromNeo;
+
+        
+    	//Check if this beacon is already existing
+        Transaction tx = graphDatabaseService.beginTx();
+		try{
+			beaconFromNeo = beaconRepository.findById(beaconID);	
+			tx.success();
+		}
+		finally{
+			tx.close();
+		}
+		
+		if( beaconFromNeo != null){
+			
+			beaconRepository.delete(beaconFromNeo);
+			log.info("Called /beacon/delete POST resource. Deleted beacon, returning True");
+			 return "True";
+		}
+		else{
+			log.info("Called /beacon/delete POST resource. Beacon was not existing, returning False");
 			return "False";
 		}
     }
