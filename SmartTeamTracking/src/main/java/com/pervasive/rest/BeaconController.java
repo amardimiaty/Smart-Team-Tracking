@@ -106,11 +106,11 @@ public class BeaconController {
 		if( beaconFromNeo != null){
 			
 			beaconRepository.delete(beaconFromNeo);
-			log.info("Called /beacon/delete POST resource. Deleted beacon, returning True");
+			log.info("Called /beacon/delete POST resource. Deleted beacon "+ beaconID +", returning True");
 			 return "True";
 		}
 		else{
-			log.info("Called /beacon/delete POST resource. Beacon was not existing, returning False");
+			log.info("Called /beacon/delete POST resource. Beacon "+ beaconID + " was not existing, returning False");
 			return "False";
 		}
     }
