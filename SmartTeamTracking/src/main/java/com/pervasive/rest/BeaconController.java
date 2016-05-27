@@ -83,7 +83,7 @@ public class BeaconController {
     
     
     @RequestMapping(method = RequestMethod.POST, value="/beacon/delete")
-    public String addBeacon(@RequestParam(value="id", defaultValue="null") Long beaconID){
+    public String addBeacon(@RequestParam(value="id", defaultValue="null") String beaconID){
     	
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
@@ -95,7 +95,8 @@ public class BeaconController {
     	//Check if this beacon is already existing
         Transaction tx = graphDatabaseService.beginTx();
 		try{
-			beaconFromNeo = beaconRepository.findById(beaconID);	
+			Long id = Long.parseLong(beaconID);
+			beaconFromNeo = beaconRepository.findById(id);
 			tx.success();
 		}
 		finally{
