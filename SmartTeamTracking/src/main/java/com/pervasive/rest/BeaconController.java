@@ -83,7 +83,7 @@ public class BeaconController {
     
     
     @RequestMapping(method = RequestMethod.POST, value="/beacon/delete")
-    public String addBeacon(@RequestParam(value="id", required = true, defaultValue = "") int beaconID){
+    public String addBeacon(@RequestParam(value="json", required = true, defaultValue = "") int beaconID){
     	
     	BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
         GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
