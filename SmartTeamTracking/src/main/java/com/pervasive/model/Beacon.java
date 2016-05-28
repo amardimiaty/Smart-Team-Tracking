@@ -24,11 +24,9 @@ public class Beacon {
 		this.lonBeacon = lonBeacon;
 	}
 
-
 	@SuppressWarnings("unused")
 	private Beacon(){}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -60,35 +58,28 @@ public class Beacon {
 	public void setLonBeacon(Double lonBeacon) {
 		this.lonBeacon = lonBeacon;
 	}
-	
-	
 
 	public Integer getMajor() {
 		return major;
 	}
 
-
 	public void setMajor(Integer major) {
 		this.major = major;
 	}
-
 
 	public Integer getMinor() {
 		return minor;
 	}
 
-
 	public void setMinor(Integer minor) {
 		this.minor = minor;
 	}
-
 
 	@Override
 	public String toString() {
 		return "Beacon [id=" + id + ", major=" + major + ", minor=" + minor + ", name=" + name + ", latBeacon="
 				+ latBeacon + ", lonBeacon=" + lonBeacon + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -97,7 +88,6 @@ public class Beacon {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -115,8 +105,5 @@ public class Beacon {
 			return false;
 		return true;
 	}
-
-
-	
 	
 }

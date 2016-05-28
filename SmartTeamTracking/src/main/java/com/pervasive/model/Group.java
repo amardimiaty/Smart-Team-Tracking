@@ -24,8 +24,7 @@ public class Group {
 	
 	@RelatedTo(type="PENDING", direction=Direction.OUTGOING)
 	private @Fetch Set<User> pending;
-	
-	
+
 	@SuppressWarnings("unused")
 	private Group(){}
 	
@@ -69,30 +68,39 @@ public class Group {
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Double getLatCenter() {
 		return latCenter;
 	}
+
 	public void setLatCenter(Double latCenter) {
 		this.latCenter = latCenter;
 	}
+
 	public Double getLongCenter() {
 		return lonCenter;
 	}
+
 	public void setLongCenter(Double longCenter) {
 		this.lonCenter = longCenter;
 	}
+
 	public int getRadius() {
 		return radius;
 	}
+
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
@@ -128,8 +136,4 @@ public class Group {
 	    return this.id.hashCode();
 	}
 
-	
-	
-	
-	
 }
