@@ -17,10 +17,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Set;
 
 import draugvar.smartteamtracking.application.SmartApplication;
-import draugvar.smartteamtracking.data.User;
 
 public class InviteUsersToGroup extends AsyncTask<Void,Void,List<String>>{
 
@@ -36,7 +34,7 @@ public class InviteUsersToGroup extends AsyncTask<Void,Void,List<String>>{
     protected List<String> doInBackground(Void... params) {
         Log.d("Rest","POST on /group/{groupId}/invite");
 
-        final String url = SmartApplication.serverPath+"/group/"+this.groupId+"/invite";
+        final String url = SmartApplication.SERVER_PATH +"/group/"+this.groupId+"/invite";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

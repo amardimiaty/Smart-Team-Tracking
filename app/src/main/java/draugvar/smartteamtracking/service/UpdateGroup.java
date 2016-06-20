@@ -40,7 +40,7 @@ public class UpdateGroup extends IntentService {
                 Log.d("Interactive", "Received groupId =" + groupId);
 
                 //Rest call
-                final String url = SmartApplication.serverPath + "/group/" + groupId;
+                final String url = SmartApplication.SERVER_PATH + "/group/" + groupId;
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 ResponseEntity<Set<User>> groupResponse = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Set<User>>() {

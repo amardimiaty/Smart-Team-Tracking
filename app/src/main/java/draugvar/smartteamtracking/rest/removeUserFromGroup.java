@@ -21,7 +21,7 @@ public class RemoveUserFromGroup extends AsyncTask<Void,Void,Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         Log.d("Rest", "Delete on /user/{userId}/{groupId}");
-        final String url = SmartApplication.serverPath + "/user/" + userId + "/"+groupId;
+        final String url = SmartApplication.SERVER_PATH + "/user/" + userId + "/"+groupId;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

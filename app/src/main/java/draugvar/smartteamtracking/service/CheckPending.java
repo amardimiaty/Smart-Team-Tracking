@@ -16,14 +16,12 @@ import java.util.List;
 import draugvar.smartteamtracking.application.SmartApplication;
 import draugvar.smartteamtracking.data.Group;
 import draugvar.smartteamtracking.data.Myself;
-import draugvar.smartteamtracking.singleton.WorkflowManager;
 import io.realm.Realm;
-import io.realm.RealmList;
 
 public class CheckPending extends IntentService {
 
     private Realm realm;
-    private static final int checkFrequency = 2000;
+    private static final int CHECK_FREQUENCY = 2000;
 
     public CheckPending(String name) {
         super(name);
@@ -36,7 +34,7 @@ public class CheckPending extends IntentService {
         Long userId = realm.where(Myself.class).findFirst().getUser().getUid();
 
         while(true){        //Dovremmo fare finchè siamo nella activity, registrata nel singleton.
-            SystemClock.sleep(checkFrequency);
+            SystemClock.sleep(CHECK_FREQUENCY);
             checkPendingOnServer(userId);
         }
     }
@@ -45,7 +43,7 @@ public class CheckPending extends IntentService {
     public void checkPendingOnServer(Long userId){
         Log.d("Service", "Get on user/{userId}/groups");
 
-        String url = SmartApplication.serverPath + "/user/" + userId + "/groups";
+        String url = SmartApplication.SERVER_PATH + "/user/" + userId + "/groups";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

@@ -2,15 +2,9 @@ package draugvar.smartteamtracking.singleton;
 
 import android.content.Context;
 import android.location.LocationManager;
-import android.util.Log;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import draugvar.smartteamtracking.data.Beacon;
-import draugvar.smartteamtracking.data.Group;
 import draugvar.smartteamtracking.data.Myself;
-import draugvar.smartteamtracking.data.User;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 

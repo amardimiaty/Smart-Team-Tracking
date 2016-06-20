@@ -24,7 +24,7 @@ public class AddContains extends AsyncTask<Void,Void,Group> {
     @Override
     protected Group doInBackground(Void... params) {
         Log.d("Rest", "Post on /user/{userId}/{groupId}/accept");
-        final String url = SmartApplication.serverPath + "/user/" + userId + "/"+groupId+"/accept";
+        final String url = SmartApplication.SERVER_PATH + "/user/" + userId + "/"+groupId+"/accept";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

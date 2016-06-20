@@ -37,7 +37,6 @@ public class GroupMemberItem extends AbstractItem<GroupMemberItem, GroupMemberIt
     public void bindView(ViewHolder viewHolder) {
         //call super so the selection is already handled for you
         super.bindView(viewHolder);
-        final Context context = viewHolder.status.getContext();
         //bind our data
         //set the text for the name
         viewHolder.name.setText(user.getName());

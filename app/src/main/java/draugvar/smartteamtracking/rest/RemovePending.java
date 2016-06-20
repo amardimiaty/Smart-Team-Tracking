@@ -10,7 +10,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import draugvar.smartteamtracking.application.SmartApplication;
-import draugvar.smartteamtracking.data.Group;
 
 public class RemovePending extends AsyncTask<Void,Void,Boolean>{
 
@@ -25,7 +24,7 @@ public class RemovePending extends AsyncTask<Void,Void,Boolean>{
     @Override
     protected Boolean doInBackground(Void... params) {
         Log.d("Rest", "Post on /user/{userId}/{groupId}/refuse");
-        final String url = SmartApplication.serverPath + "/user/" + userId + "/"+groupId+"/refuse";
+        final String url = SmartApplication.SERVER_PATH + "/user/" + userId + "/"+groupId+"/refuse";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

@@ -16,7 +16,7 @@ public class GetGroupCount extends AsyncTask<Long,Void,Integer> {
         Log.d("Rest","GET on /group/groupId/count");
 
         Long groupId = params[0];
-        final String url = SmartApplication.serverPath+"/group/"+groupId+"/count";
+        final String url = SmartApplication.SERVER_PATH +"/group/"+groupId+"/count";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

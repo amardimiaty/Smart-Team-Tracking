@@ -1,6 +1,5 @@
 package draugvar.smartteamtracking.listener;
 
-import android.app.Activity;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -13,10 +12,8 @@ import draugvar.smartteamtracking.rest.UpdateUserGPSCoordinates;
 import draugvar.smartteamtracking.singleton.WorkflowManager;
 
 public class CustomLocationListener implements LocationListener{
-    private Activity activity;
 
-    public CustomLocationListener(Activity activity) {
-        this.activity = activity;
+    public CustomLocationListener() {
     }
 
     @Override

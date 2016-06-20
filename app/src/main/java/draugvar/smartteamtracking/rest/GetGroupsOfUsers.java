@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import draugvar.smartteamtracking.application.SmartApplication;
-import draugvar.smartteamtracking.data.Beacon;
 import draugvar.smartteamtracking.data.Group;
 
 //Path /user/{userId}/groups. Returns list of groups user is part of.
@@ -29,7 +28,7 @@ public class GetGroupsOfUsers extends AsyncTask<Void,Void,List<Group>>{
     @Override
     protected List<Group> doInBackground(Void... params) {
         Log.d("Rest", "Get on user/{userId}/groups");
-        final String url = SmartApplication.serverPath + "/user/" + userId + "/groups";
+        final String url = SmartApplication.SERVER_PATH + "/user/" + userId + "/groups";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

@@ -36,6 +36,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import draugvar.smartteamtracking.R;
 import draugvar.smartteamtracking.adapter.FriendItem;
@@ -44,8 +45,8 @@ import draugvar.smartteamtracking.singleton.WorkflowManager;
 
 public class FriendsActivity extends AppCompatActivity {
     private AutoCompleteTextView editText;
-    private ArrayList<User> users = new ArrayList<User>();
-    private ArrayList<String[]> friends_list;
+    private List<User> users = new ArrayList<User>();
+    private List<String[]> friends_list;
     private Context context;
     private FastItemAdapter<FriendItem> fastAdapter;
 

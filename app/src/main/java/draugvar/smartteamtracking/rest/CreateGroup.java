@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 
 import draugvar.smartteamtracking.application.SmartApplication;
 import draugvar.smartteamtracking.data.Group;
-import draugvar.smartteamtracking.data.User;
 
 public class CreateGroup extends AsyncTask<Void,Void,Long>{
 
@@ -27,7 +26,7 @@ public class CreateGroup extends AsyncTask<Void,Void,Long>{
     protected Long doInBackground(Void... params) {
         Log.d("Rest","POST on /group");
 
-        final String url = SmartApplication.serverPath+"/group?userId="+this.userId+"&name="+group.getName()+
+        final String url = SmartApplication.SERVER_PATH +"/group?userId="+this.userId+"&name="+group.getName()+
                             "&lat="+group.getLatCenter()+"&lon="+group.getLonCenter()+"&radius="+group.getRadius();
 
         RestTemplate restTemplate = new RestTemplate();

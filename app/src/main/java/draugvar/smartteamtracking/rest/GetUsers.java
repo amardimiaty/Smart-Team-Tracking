@@ -22,7 +22,7 @@ public class GetUsers extends AsyncTask<Long,Void,Set<User>> {
         Log.d("Rest","GET on /group/groupId");
 
         Long groupId = params[0];
-        final String url = SmartApplication.serverPath+"/group/"+groupId;
+        final String url = SmartApplication.SERVER_PATH +"/group/"+groupId;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

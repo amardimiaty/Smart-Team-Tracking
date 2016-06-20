@@ -23,7 +23,7 @@ public class UpdateUserGPSCoordinates extends AsyncTask<Void,Void,Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         Log.d("Rest", "Post on /user");
-        final String url = SmartApplication.serverPath + "/user";
+        final String url = SmartApplication.SERVER_PATH + "/user";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

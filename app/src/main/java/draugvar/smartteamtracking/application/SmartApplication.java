@@ -18,7 +18,7 @@ import draugvar.smartteamtracking.activity.MainActivity;
 import draugvar.smartteamtracking.singleton.WorkflowManager;
 
 public class SmartApplication extends Application {
-    public static final String serverPath = "http://amaca.ga:8080";
+    public static final String SERVER_PATH = "http://amaca.ga:8080";
 
 
     @Override

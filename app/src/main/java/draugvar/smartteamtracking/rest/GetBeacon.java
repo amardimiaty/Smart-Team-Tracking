@@ -22,7 +22,7 @@ public class GetBeacon extends AsyncTask<Void,Void,List<Beacon>>{
     protected List<Beacon> doInBackground(Void... params) {
         Log.d("Rest","GET on /beacon");
 
-        final String url = SmartApplication.serverPath+"/beacon";
+        final String url = SmartApplication.SERVER_PATH +"/beacon";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

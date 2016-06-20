@@ -18,7 +18,7 @@ public class AuthOrSignupUser extends AsyncTask<User, Void, User> {
 
             User user = params[0];
             Log.d("Rest","GET on /user. Input user for rest call is: "+user.toString());
-            final String url = SmartApplication.serverPath+"/user?token=" + user.getAuthToken()+
+            final String url = SmartApplication.SERVER_PATH +"/user?token=" + user.getAuthToken()+
                                 "&facebookId="+user.getFacebookId()+"&name="+user.getName()+
                                 "&surname="+user.getSurname()+"&email="+user.getEmail();
 

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -120,10 +119,8 @@ public class MainActivity extends AppCompatActivity {
                             boolean found = false;
                             while(itemIterator.hasNext()){
                                 AbstractItem item = (AbstractItem) itemIterator.next();
-                                if(item instanceof PendingGroupItem){
-                                    if(group.equals(((PendingGroupItem) item).group))
-                                        found = true;
-                                }
+                                if(item instanceof PendingGroupItem && group.equals(((PendingGroupItem) item).group))
+                                    found = true;
                             }
                             if(!found)
                                 fastAdapter.add(0,new PendingGroupItem(group));
@@ -134,10 +131,8 @@ public class MainActivity extends AppCompatActivity {
                             boolean found = false;
                             while(itemIterator.hasNext()){
                                 AbstractItem item = (AbstractItem) itemIterator.next();
-                                if(item instanceof GroupItem){
-                                    if(group.equals(((GroupItem) item).group))
-                                        found = true;
-                                }
+                                if(item instanceof GroupItem && group.equals(((GroupItem) item).group))
+                                    found = true;
                             }
                             if(!found)
                                 fastAdapter.add(new GroupItem(group));
@@ -387,7 +382,7 @@ public class MainActivity extends AppCompatActivity {
 
             //GPS initialization
 
-            CustomLocationListener locationListener = new CustomLocationListener(this);
+            CustomLocationListener locationListener = new CustomLocationListener();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, locationListener);
         } catch (SecurityException e) {
             Log.d("Location", "Location not enabled");

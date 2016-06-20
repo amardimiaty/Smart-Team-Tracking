@@ -27,7 +27,7 @@ public class GetPendingGroupsOfUsers extends AsyncTask<Void,Void,List<Group>> {
     @Override
     protected List<Group> doInBackground(Void... params) {
         Log.d("Rest", "Get on user/{userId}/pending");
-        final String url = SmartApplication.serverPath + "/user/" + userId + "/pending";
+        final String url = SmartApplication.SERVER_PATH + "/user/" + userId + "/pending";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

@@ -10,7 +10,7 @@ public class Myself extends RealmObject{
     //private RealmList<Group> groups;
     //private RealmList<Group> pendingGroups;
 
-    public Myself(User user, List<Group> groups, List<Group> pendingGroups){
+    public Myself(User user){
         this.user = user;
         /*this.groups = new RealmList<>();
         this.groups.addAll(groups);
