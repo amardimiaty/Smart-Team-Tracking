@@ -93,8 +93,8 @@ public class BeaconController {
     	//Check if this beacon is already existing
         Transaction tx = graphDatabaseService.beginTx();
 		try{
-			Long remove_id = new Long(beaconID);
-			beaconFromNeo = beaconRepository.findById(remove_id);
+			Long removeId = Long.valueOf(beaconID);
+			beaconFromNeo = beaconRepository.findById(removeId);
 			tx.success();
 		}
 		finally{

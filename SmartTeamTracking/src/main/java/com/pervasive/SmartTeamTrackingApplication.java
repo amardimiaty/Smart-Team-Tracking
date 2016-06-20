@@ -32,7 +32,7 @@ public class SmartTeamTrackingApplication {
 		try {
 			FileUtils.deleteRecursively(new File("embeddedNeo4j.db"));
 		} catch (IOException e) {
-			System.out.println("Can't delete database file");
+			log.info("Can't delete database file");
 			e.printStackTrace();
 		}
 		log.info("Cleared data in Neo4j Database");
