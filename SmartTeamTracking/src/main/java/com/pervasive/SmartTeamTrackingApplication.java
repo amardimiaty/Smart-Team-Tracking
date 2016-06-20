@@ -27,24 +27,33 @@ public class SmartTeamTrackingApplication {
 	
 
 	public static void main(String[] args) {
+		
+		// Clear Database at server startup. Comment if not needed
 		try {
 			FileUtils.deleteRecursively(new File("embeddedNeo4j.db"));
 		} catch (IOException e) {
 			System.out.println("Can't delete database file");
 			e.printStackTrace();
 		}
-		
+		log.info("Cleared data in Neo4j Database");
+	
+		// Spring init 
 		context = SpringApplication.run(SmartTeamTrackingApplication.class, args);
+		log.info("Server started correctly");
+		
+		// Populate the DB with test data for debugging. Comment if not needed 
+		/*
 		GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
 		UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
 		BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
 		GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
-		log.info("Debugger working");
-		
 		testUser(graphDatabaseService, userRepository, beaconRepository,groupRepository);
+		*/
+		
 	}
 	
 	
+	// Test method to populate the database, used for debugging the server locally 
 	public static void testUser(GraphDatabaseService graphDatabaseService, UserRepository userRepository,BeaconRepository beaconRepository,GroupRepository groupRepository){
 	
 		User stefano = new User("Stefano","Conoci","stefano.conoci@gmail.com",null);
