@@ -10,7 +10,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 @NodeEntity
-public class Group {
+public class Group{
 	
 	@GraphId
 	private Long id;	//KEY
@@ -114,6 +114,14 @@ public class Group {
 	public void invalidPending(){
 		this.pending = null;
 	}
+	
+	public void setContains(Set<User> contains) {
+		this.contains = contains;
+	}
+
+	public void setPending(Set<User> pending) {
+		this.pending = pending;
+	}
 
 	@Override
 	public String toString() {
@@ -135,5 +143,4 @@ public class Group {
 	public int hashCode() {
 	    return this.id.hashCode();
 	}
-
 }

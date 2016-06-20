@@ -22,6 +22,7 @@ import com.pervasive.repository.BeaconRepository;
 import com.pervasive.repository.GroupRepository;
 import com.pervasive.repository.UserRepository;
 import com.pervasive.util.FacebookUtils;
+import com.pervasive.util.RestUtils;
 
 @RestController
 public class UserController {
@@ -140,7 +141,7 @@ public class UserController {
 			tx.close();
 		}
 		log.info("Called /user/"+userId+"/groups resource. Returning "+groupList.toString());
-		return groupList;
+		return RestUtils.clearTokens(groupList);
     }
   
 
@@ -168,7 +169,7 @@ public class UserController {
 			tx.close();
 		}
 		log.info("Called /user/"+userId+"/pending resource. Returning "+groupList.toString());
-		return groupList;
+		return RestUtils.clearTokens(groupList);
     }
     
     
@@ -230,7 +231,9 @@ public class UserController {
 			tx.close();
 		}
 		log.info("Called /user/"+userId+"/"+groupId+"/accept resource. Returning "+groupFromNeo.toString());
-		return groupFromNeo;
+		
+		// Set to null tokens of all users in the group before returning
+		return RestUtils.clearTokens(groupFromNeo);
     }
     
     

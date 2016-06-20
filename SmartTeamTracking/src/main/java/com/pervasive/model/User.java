@@ -1,6 +1,5 @@
 package com.pervasive.model;
 
-
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -8,7 +7,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 @NodeEntity
-public class User {
+public class User{
 	
 	@GraphId
 	private Long id; //KEY
@@ -113,7 +112,7 @@ public class User {
 				+ ", lonGPS=" + lonGPS + ", authToken=" + authToken + ", facebookId=" + facebookId + ", beacon="
 				+ beacon + "]";
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

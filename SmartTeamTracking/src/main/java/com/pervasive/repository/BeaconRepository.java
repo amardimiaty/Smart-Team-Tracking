@@ -4,7 +4,6 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.pervasive.model.Beacon;
-import com.pervasive.model.Group;
 
 public interface BeaconRepository extends CrudRepository<Beacon, String>{
 	

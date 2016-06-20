@@ -19,6 +19,7 @@ import com.pervasive.model.Group;
 import com.pervasive.model.User;
 import com.pervasive.repository.GroupRepository;
 import com.pervasive.repository.UserRepository;
+import com.pervasive.util.RestUtils;
 
 
 @RestController
@@ -54,7 +55,7 @@ public class GroupContoller {
 			tx.close();
 		}
     	log.info("Called /group/"+groupId+" resource. Returning "+groupFromNeo.getContains().toString());
-		return groupFromNeo.getContains();    	
+		return RestUtils.clearTokens(groupFromNeo.getContains());    	
     }
     
     //Returns -1 if can't find group, else returns number of users of a Group. 
