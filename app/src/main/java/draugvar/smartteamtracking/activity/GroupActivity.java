@@ -128,7 +128,6 @@ public class GroupActivity extends AppCompatActivity implements OnMapReadyCallba
                                     groupMemberItem.user.getBeacon().getLonBeacon());
                 mMap.addMarker(new MarkerOptions().position(latLng).title(groupMemberItem.user.getName()));
             }
-            //All is null
         }
     }
 
