@@ -42,13 +42,13 @@ public class SmartTeamTrackingApplication {
 		log.info("Server started correctly");
 		
 		// Populate the DB with test data for debugging. Comment if not needed 
-		// /*
+		/*
 		GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
 		UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
 		BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
 		GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
 		testUser(graphDatabaseService, userRepository, beaconRepository,groupRepository);
-		// */
+		*/
 		
 	}
 	
