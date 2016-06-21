@@ -32,6 +32,9 @@ As you can see from the picture, the main components of the project are:
 + **Database (Embedded Neo4j)**
 
 As shown in the picture, after being started, the Server is going to wait for any REST call coming from the Clients, making the required changes persistent by interacting with the Neo4j database. Almost every object has CRUD operations available by REST API.
+The relations between objects are shown in the ER diagram below:
+
+![alt tag](http://i.imgur.com/ikM0bNH.png)
 
 
 ## Installation instructions
