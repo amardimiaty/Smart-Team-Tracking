@@ -143,9 +143,10 @@ If the beacon is successfully deleted from the system, a message will be display
 Installation instructions
 -------------------------------------------
 
-To install the modules of the web application, you have to follow these steps:
+To install one of these PHP modules to make REST requests inside a Drupal working web-application,
+you have to follow these steps:
 
-- install Drupal (MySQL required)
-- enable php filter Drupal module
-- download php modules
-- use each module as body of Drupal page.
+- Inside the Drupal environment, download and enable the *php filter* Drupal module;
+- Download the php module from Git;
+- Insert the PHP module as *body* of Drupal Content page;
+- Publish the Drupal page.
