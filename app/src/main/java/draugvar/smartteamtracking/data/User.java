@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.parceler.Parcel;
 
-import io.realm.RealmList;
 import io.realm.RealmObject;
 
 @Parcel
@@ -23,6 +22,7 @@ public class User extends RealmObject {
     String authToken;
     String facebookId;
     Beacon beacon;
+    boolean isCurrentGPS;
 
     public User(){
         this.name = null;
@@ -35,7 +35,7 @@ public class User extends RealmObject {
     }
 
     public User(long uid, String name, String surname, String email, Double latGPS,
-                Double lonGPS, String authToken, String facebookId) {
+                Double lonGPS, String authToken, String facebookId, boolean isCurrentGPS) {
         this.uid = uid;
         this.name = name;
         this.surname = surname;
@@ -44,6 +44,7 @@ public class User extends RealmObject {
         this.lonGPS = lonGPS;
         this.authToken = authToken;
         this.facebookId = facebookId;
+        this.isCurrentGPS = isCurrentGPS;
     }
 
     public User(long uid, String name, String surname, String email) {
@@ -125,6 +126,14 @@ public class User extends RealmObject {
         this.beacon = beacon;
     }
 
+    public boolean isCurrentGPS() {
+        return isCurrentGPS;
+    }
+
+    public void setCurrentGPS(boolean currentGPS) {
+        isCurrentGPS = currentGPS;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -137,6 +146,7 @@ public class User extends RealmObject {
                 ", authToken='" + authToken + '\'' +
                 ", facebookId='" + facebookId + '\'' +
                 ", beacon=" + beacon +
+                ", isCurrentGPS=" + isCurrentGPS +
                 '}';
     }
 

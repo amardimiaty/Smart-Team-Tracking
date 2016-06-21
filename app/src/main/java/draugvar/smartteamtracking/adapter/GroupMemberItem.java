@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -43,12 +44,17 @@ public class GroupMemberItem extends AbstractItem<GroupMemberItem, GroupMemberIt
         //set the text for the description or hide
         viewHolder.description.setText(user.getSurname());
         //set the text for status of parties
-        if(user.getBeacon() == null)
+        if(user.getBeacon() != null)
         {
+            viewHolder.status.setText(user.getBeacon().getName());
+
+        } else if(!user.isCurrentGPS()){
+            viewHolder.card.setEnabled(false);
+            String beacon = "Out of Range";
+            viewHolder.status.setText(beacon);
+        } else {
             String beacon = "No Beacon";
             viewHolder.status.setText(beacon);
-        }else {
-            viewHolder.status.setText(user.getBeacon().getName());
         }
         //set the text for initials // to do elaborate!
         if(!user.getName().isEmpty()) {
@@ -63,6 +69,7 @@ public class GroupMemberItem extends AbstractItem<GroupMemberItem, GroupMemberIt
         protected TextView description;
         protected TextView status;
         protected TextView initials;
+        protected LinearLayout card;
 
         public ViewHolder(View view) {
             super(view);
@@ -70,6 +77,7 @@ public class GroupMemberItem extends AbstractItem<GroupMemberItem, GroupMemberIt
             this.description = (TextView) view.findViewById(R.id.group_member_description);
             this.status = (TextView) view.findViewById(R.id.group_member_status);
             this.initials = (TextView) view.findViewById(R.id.group_member_initials);
+            this.card = (LinearLayout) view.findViewById(R.id.friend_card);
         }
     }
 

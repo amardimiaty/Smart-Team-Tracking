@@ -3,6 +3,7 @@ package draugvar.smartteamtracking.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +20,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -29,7 +33,6 @@ import org.parceler.Parcels;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import draugvar.smartteamtracking.R;
@@ -117,16 +120,32 @@ public class GroupActivity extends AppCompatActivity implements OnMapReadyCallba
             // Show rationale and request permission.
             Log.d("CreateGroupActivity", "No permissions");
         }
+        CircleOptions circleOptions = new CircleOptions()
+                .center(new LatLng(group.getLatCenter(), group.getLonCenter()))
+                .radius(group.getRadius()) // In meters
+                .strokeWidth(3)
+                .strokeColor(Color.argb(40, 20, 20, 20))
+                .fillColor(Color.argb(20, 20, 20, 20));
+        mMap.addCircle(circleOptions);
+
         LatLng latLng;
         for(GroupMemberItem groupMemberItem: fastAdapter.getAdapterItems()){
-            if(groupMemberItem.user.getBeacon() == null && groupMemberItem.user.getLatGPS() != null
-                    && groupMemberItem.user.getLonGPS()!=null) {
-                latLng = new LatLng(groupMemberItem.user.getLatGPS(), groupMemberItem.user.getLonGPS());
-                mMap.addMarker(new MarkerOptions().position(latLng).title(groupMemberItem.user.getName()));
-            } else if(groupMemberItem.user.getBeacon() != null) {
+            if(groupMemberItem.user.getBeacon() != null) {
                 latLng = new LatLng(groupMemberItem.user.getBeacon().getLatBeacon(),
-                                    groupMemberItem.user.getBeacon().getLonBeacon());
+                        groupMemberItem.user.getBeacon().getLonBeacon());
                 mMap.addMarker(new MarkerOptions().position(latLng).title(groupMemberItem.user.getName()));
+            } else if(groupMemberItem.user.getLatGPS() != null
+                    && groupMemberItem.user.getLonGPS()!= null) {
+                if(groupMemberItem.user.isCurrentGPS()) {
+                    latLng = new LatLng(groupMemberItem.user.getLatGPS(), groupMemberItem.user.getLonGPS());
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(groupMemberItem.user.getName()));
+                } else {
+                    latLng = new LatLng(groupMemberItem.user.getLatGPS(), groupMemberItem.user.getLonGPS());
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(groupMemberItem.user.getName())
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                }
             }
         }
     }
@@ -179,14 +198,22 @@ public class GroupActivity extends AppCompatActivity implements OnMapReadyCallba
             mMap.clear();
             LatLng latLng;
             for(GroupMemberItem groupMemberItem: fastAdapter.getAdapterItems()){
-                if(groupMemberItem.user.getBeacon() == null && groupMemberItem.user.getLatGPS() != null
-                        && groupMemberItem.user.getLonGPS()!=null) {
-                    latLng = new LatLng(groupMemberItem.user.getLatGPS(), groupMemberItem.user.getLonGPS());
-                    mMap.addMarker(new MarkerOptions().position(latLng).title(groupMemberItem.user.getName()));
-                } else if(groupMemberItem.user.getBeacon() != null) {
+                if(groupMemberItem.user.getBeacon() != null) {
                     latLng = new LatLng(groupMemberItem.user.getBeacon().getLatBeacon(),
                             groupMemberItem.user.getBeacon().getLonBeacon());
                     mMap.addMarker(new MarkerOptions().position(latLng).title(groupMemberItem.user.getName()));
+                } else if(groupMemberItem.user.getLatGPS() != null
+                        && groupMemberItem.user.getLonGPS()!= null) {
+                    if(groupMemberItem.user.isCurrentGPS()) {
+                        latLng = new LatLng(groupMemberItem.user.getLatGPS(), groupMemberItem.user.getLonGPS());
+                        mMap.addMarker(new MarkerOptions().position(latLng).title(groupMemberItem.user.getName()));
+                    } else {
+                        latLng = new LatLng(groupMemberItem.user.getLatGPS(), groupMemberItem.user.getLonGPS());
+                        mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(groupMemberItem.user.getName())
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                    }
                 }
             }
         }
