@@ -143,7 +143,7 @@ If the beacon is successfully deleted from the system, a message will be display
 Installation instructions
 -------------------------------------------
 
-To install the web application, you have to follow these steps:
+To install the modules of the web application, you have to follow these steps:
 
 - install Drupal (MySQL required)
 - enable php filter Drupal module
