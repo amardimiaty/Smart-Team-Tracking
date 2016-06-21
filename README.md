@@ -41,7 +41,7 @@ The architecture components are the same of the whole project:
 The basic Android behaviour has been already shown in the main README file: when the Android device, where the application is installed, comes near a beacon, it will retrieve the beacon’s ID; after this, the Android Client will contact the Server, notifying the association Client-Beacon by the Server REST API. Finally, after this interaction, the device will wait a response from the Server when the operation is completed.<br />
 This is one of the main activities of the application; the lifecycle of the whole application is shown in the image below.
 
-<img src="http://i.imgur.com/eWglZKn.png" width="200" align="middle">
+<img src="http://i.imgur.com/eWglZKn.png" width="200" style="text-align:center; display:block">
 
 When the application is started, the Splash Activity is started:
 
