@@ -63,7 +63,7 @@ Check the README of each component, since each part has different a installation
 
 You can find us on LinkedIn Profiles:
 
-- *BiagioBotticelli*: https://it.linkedin.com/in/biagio-botticelli-444b87105/en ;
+- *Biagio Botticelli*: https://it.linkedin.com/in/biagio-botticelli-444b87105/en ;
 - *Stefano Conoci*: https://it.linkedin.com/in/stefano-conoci-06501844 ; 
 - *Davide Meacci*: https://it.linkedin.com/in/davide-meacci-ab065bb7/en ;
 - *Salvatore Rivieccio*: https://it.linkedin.com/in/salvatore-rivieccio-653644b7/en .
