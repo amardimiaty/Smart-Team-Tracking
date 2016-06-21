@@ -53,6 +53,7 @@ From the Main Activity, we can spawn new activities to manage our groups, creati
 + `git clone https://github.com/draugvar/SmartTeamTracking.git` in the branch of the application
 
 + open the project in Android Studio
++ set the IP address of your server machine (if you want to customize it)
 
 + compile it
 
