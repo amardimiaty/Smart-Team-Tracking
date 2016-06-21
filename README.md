@@ -49,7 +49,7 @@ Each part of the application has its own README file, so you can check it if you
 
 ## Installation instructions
 
-Check the README of each branch, since each part has different a installation.
+Check the *README file* of each branch, since each part has different a installation.
 
 
 ## Objectives and next improvements
