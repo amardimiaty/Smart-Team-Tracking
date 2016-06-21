@@ -1,7 +1,7 @@
 # SmartTeamTracking Server
 
-The SmartTeamTracking Project allows people to connect and reach out easily both Indoor and Outdoor.
-Users can simply create their own group, identified by a location and a radius, and then invite their friends to this group, sharing each other their position if they are within the boundaries of the group.
+The Server part of this project is meant to be a connection between the Neo4j embedded database and the Web/Android clients.
+In fact, almost all REST calls made from the Client side to the Server are going to interact with the Neo4j database, implementing basically CRUD operations on every possible object of the application. We can create and remove beacons, we can create, update and remove groups, all made from a simple REST call that will make these changes persistent by updating the Neo4j Database.
 
 
 ## Technologies used 
@@ -9,13 +9,6 @@ Users can simply create their own group, identified by a location and a radius, 
 How this works?
 
 The main used technologies are:
-
-+ **Estimote**
-providing a low-energy bluetooth device for indoor positioning
-http://estimote.com/ https://www.bluetooth.com/
-
-+ **Global Positioning System (GPS)**
-http://www.gps.gov/
 
 + **Neo4j**
 a non-relational database for social-network relationship
@@ -38,8 +31,7 @@ As you can see from the picture, the main components of the project are:
 + **Server**
 + **Database (Embedded Neo4j)**
 
-When the Android device where the application is installed comes near a beacon, it will retrieve the beacon’s ID; after this, the Android Client will contact the Server, notifying the association Client-Beacon by the Server REST API. Finally, after getting this request, the Server will save this association in the Embedded Neo4j database, notifying the Android Client when the operation is completed.
-In addiction to this one, in the other parts of the application we have just other simple Client-Server-Database interactions, like the last part of the one shown before (3-4-5-6).
+As shown in the picture, after being started, the Server is going to wait for any REST call coming from the Clients, making the required changes persistent by interacting with the Neo4j database
 
 
 ## Installation instructions
@@ -51,8 +43,3 @@ In addiction to this one, in the other parts of the application we have just oth
 `mvn install`
 
 `java -jar “MavenOutput”.jar`
-
-For the Client Part:
-Simply download the .apk file and install it in your application.
-
-Finally, you will have to setup the IP address of your machine in the Client code.
