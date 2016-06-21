@@ -41,11 +41,15 @@ As you can see from the picture, the main components of the project are:
 When the Android device where the application is installed comes near a beacon, it will retrieve the beacon’s ID; after this, the Android Client will contact the Server, notifying the association Client-Beacon by the Server REST API. Finally, after getting this request, the Server will save this association in the Embedded Neo4j database, notifying the Android Client when the operation is completed.
 In addiction to this one, in the other parts of the application we have just other simple Client-Server-Database interactions, like the last part of the one shown before (3-4-5-6).
 Each part of the application has its own README file, so you can check it if you want further explanation on a specific component.
-
+<br /> In particular, we have 3 branches:
++ **master**, where we the whole project is described
++ **android**, related to the Android component
++ **server**, related to the Server
++ **web_app**, related to the Web Application
 
 ## Installation instructions
 
-Check the README of each component, since each part has different a installation.
+Check the README of each branch, since each part has different a installation.
 
 
 ## Objectives and next improves
