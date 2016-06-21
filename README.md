@@ -43,14 +43,16 @@ This is one of the main activities of the application; the lifecycle of the whol
 
 ![alt tag](http://i.imgur.com/eWglZKn.png)
 
-
+<br />
 When the application is started, the Splash Activity is started:
+<br />
 
 <img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/splash.png" width="20%">
 <img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/login.png" width="20%">
 <img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/create_groups.png" width="20%">
 <img src="http://i.imgur.com/rPzXdSU.jpg" width="20%">
 
+<br />
 here we do some basic interaction (starting the login activity, for an example), and then we switch into the Main Activity.<br />
 From the Main Activity, we can spawn new activities to manage our groups, creating new ones with a specific radius (for privacy reasons) and adding people to them; 
 after having done that, we can check in the minimap where our friends are, when they will associated with a beacon representing a certain area.
