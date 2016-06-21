@@ -14,7 +14,7 @@ The main used technologies are:
 The library used to interact with estimote beacons.<br />
 http://developer.estimote.com
 
-+ **Global Positioning System (GPS)**
++ **Global Positioning System (GPS)**<br />
 http://www.gps.gov/
 
 + **REST calls**
