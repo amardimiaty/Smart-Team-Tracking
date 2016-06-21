@@ -55,15 +55,25 @@ public class GroupContoller {
 			tx.close();
 		}
 		
-		// Must set to null coordinates if user not in range of group 
+		// Must set to null coordinates if user not in range of group or if beacon not in range
 		Set<User> usersInRadius = groupFromNeo.getContains();
 		for(User user : usersInRadius){
-			if(user.getLatGPS() != null && user.getLonGPS() != null){
-				// Check if distance between center and user is bigger than group radius
-				if( RestUtils.distance(user.getLatGPS(), groupFromNeo.getLatCenter(), 
-						user.getLonGPS(), groupFromNeo.getLongCenter(), 0, 0) > groupFromNeo.getRadius() ){
+			if(user.getBeacon() == null){ //Use GPS as position if not in range of beacon 
+				if(user.getLatGPS() != null && user.getLonGPS() != null){
+					// Check if distance between center and user is bigger than group radius
+					if( RestUtils.distance(user.getLatGPS(), groupFromNeo.getLatCenter(), 
+							user.getLonGPS(), groupFromNeo.getLongCenter(), 0, 0) > groupFromNeo.getRadius() ){
+						user.setLatGPS(null);
+						user.setLonGPS(null);
+					}	
+				}
+			}
+			else{ // In beacon range
+				if( RestUtils.distance(user.getBeacon().getLatBeacon(), groupFromNeo.getLatCenter(), 
+						user.getBeacon().getLonBeacon(), groupFromNeo.getLongCenter(), 0, 0) > groupFromNeo.getRadius() ){
 					user.setLatGPS(null);
 					user.setLonGPS(null);
+					user.setBeacon(null);
 				}	
 			}
 		}
