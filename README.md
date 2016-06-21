@@ -1,7 +1,7 @@
 # SmartTeamTracking Server
 
 The Server part of this project is meant to be a connection between the Neo4j embedded database and the Web/Android clients.
-In fact, almost all REST calls made from the Client side to the Server are going to interact with the Neo4j database, implementing basically CRUD operations on every possible object of the application. We can create and remove beacons, we can create, update and remove groups, all made from a simple REST call that will make these changes persistent by updating the Neo4j Database.
+<br /> In fact, almost all REST calls made from the Client side to the Server are going to interact with the Neo4j database, implementing basically CRUD operations on every possible object of the application. We can create and remove beacons, we can create, update and remove groups, all made from a simple REST call that will make these changes persistent by updating the Neo4j Database.
 
 
 ## Technologies used 
@@ -31,7 +31,7 @@ As you can see from the picture, the main components of the project are:
 + **Server**
 + **Database (Embedded Neo4j)**
 
-As shown in the picture, after being started, the Server is going to wait for any REST call coming from the Clients, making the required changes persistent by interacting with the Neo4j database
+As shown in the picture, after being started, the Server is going to wait for any REST call coming from the Clients, making the required changes persistent by interacting with the Neo4j database. Almost every object has CRUD operations available by REST API.
 
 
 ## Installation instructions
