@@ -10,13 +10,13 @@ GroupTracking is an Android application that wants to allow to create group of f
 and tracking their position outside building but also INSIDE! By using Beacons!
 
 .. image:: https://github.com/biagiobotticelli/Drupal_Php_Modules/blob/master/images/beacons.png
-   :align: center
+   :width: 200 px
 
 With GroupTracking you can create a group of friends, define a range in which your friends will be tracked and 
 get their position directly on a map. Friends that are out of the range will NOT be tracked!
 
 .. image:: https://github.com/biagiobotticelli/Drupal_Php_Modules/blob/master/images/map.png
-   :align: center
+   :width: 200 px
 
 
 How does GroupTracking make tracking?
