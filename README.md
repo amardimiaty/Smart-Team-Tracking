@@ -47,8 +47,6 @@ This is one of the main activities of the application; the lifecycle of the whol
 When the application is started, the Splash Activity is started:
 
 <img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/splash.png" width="20%">
-<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/splash.png" width="20%">
-<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/splash.png" width="20%">
 <img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/login.png" width="20%">
 <img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/create_groups.png" width="20%">
 <img src="http://i.imgur.com/rPzXdSU.jpg" width="20%">
