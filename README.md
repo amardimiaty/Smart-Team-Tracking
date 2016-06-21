@@ -50,13 +50,13 @@ From the Main Activity, we can spawn new activities to manage our groups, creati
 ## Installation instructions
 
 
-`git clone https://github.com/draugvar/SmartTeamTracking.git` in the branch of the application
++ `git clone https://github.com/draugvar/SmartTeamTracking.git` in the branch of the application
 
-open the project in Android Studio
++ open the project in Android Studio
 
-compile it
++ compile it
 
-get the .apk file and install it
++ get the .apk file and install it
 
 Otherwise, you can directly install the .apk file in your device.
 
