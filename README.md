@@ -57,7 +57,9 @@ From the Main Activity, we can spawn new activities to manage our groups, creati
 
 after having done that, we can check in the minimap where our friends are, when they will associated with a beacon representing a certain area.
 
-![alt tag](http://imgur.com/rPzXdSU)
+![alt tag](http://i.imgur.com/rPzXdSU)
+
+<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/create_groups.png" width="48">
 
 
 ## Installation instructions
