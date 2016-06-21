@@ -42,6 +42,7 @@ The basic Android behaviour has been already shown in the main README file: when
 This is one of the main activities of the application; the lifecycle of the whole application is shown in the image below.
 
 <img src="http://i.imgur.com/eWglZKn.png" width="200" style="left:200px">
+<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/splash.png" width="200">
 
 When the application is started, the Splash Activity is started:
 
