@@ -42,13 +42,13 @@ public class SmartTeamTrackingApplication {
 		log.info("Server started correctly");
 		
 		// Populate the DB with test data for debugging. Comment if not needed 
-		/*
+		// /*
 		GraphDatabaseService graphDatabaseService = (GraphDatabaseService) context.getBean(GraphDatabaseService.class);
 		UserRepository userRepository = (UserRepository) context.getBean(UserRepository.class);
 		BeaconRepository beaconRepository = (BeaconRepository) context.getBean(BeaconRepository.class);
 		GroupRepository groupRepository = (GroupRepository) context.getBean(GroupRepository.class);
 		testUser(graphDatabaseService, userRepository, beaconRepository,groupRepository);
-		*/
+		// */
 		
 	}
 	
@@ -56,15 +56,15 @@ public class SmartTeamTrackingApplication {
 	// Test method to populate the database, used for debugging the server locally 
 	public static void testUser(GraphDatabaseService graphDatabaseService, UserRepository userRepository,BeaconRepository beaconRepository,GroupRepository groupRepository){
 	
-		User stefano = new User("Stefano","Conoci","stefano.conoci@gmail.com",null);
+		User stefano = new User("Stefano","Conoci","stefano.conoci@gmail.com",null, false);
 		stefano.setLatGPS(20.0);
 		stefano.setLonGPS(44.2);
 		stefano.setAuthToken("AuthToken123");
 		
-		User davide = new User("Davide","Meacci","davide.meacci@gmail.com", null);
+		User davide = new User("Davide","Meacci","davide.meacci@gmail.com", null, false);
 		
-		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com", null);
-		User chicco = new User("Chicco","qwerty","chicco@gmail.com", null);
+		User angelo = new User("Angelo","Meacci","angelo.meacci@gmail.com", null, false);
+		User chicco = new User("Chicco","qwerty","chicco@gmail.com", null, false );
 		
 		Beacon b2 = new Beacon(30781,5475, "DIAG-A4", 41.890715, 12.503897);   //GREEN BEACON -> A4
 		Beacon a1 = new Beacon(23082,20505, "DIAG-Study room", 41.890594, 12.503956); //PURPLE BEACON -> Student's Room

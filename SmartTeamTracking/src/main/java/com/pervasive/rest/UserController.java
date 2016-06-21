@@ -188,8 +188,16 @@ public class UserController {
 				log.info("Called /user/"+user.getId()+" resource. Returning false");
 				return false;
 			}
-			userFromNeo.setLatGPS(user.getLatGPS());
-			userFromNeo.setLonGPS(user.getLonGPS());
+			if( user.getLatGPS() != null && user.getLonGPS()!=null){
+				userFromNeo.setLatGPS(user.getLatGPS());
+				userFromNeo.setLonGPS(user.getLonGPS());
+				userFromNeo.setCurrentGPS(true);
+				log.info("Called /user/"+user.getId()+" resource. Returning true, setting latitude to "+user.getLatGPS()+" and longitude to "+user.getLonGPS());
+			}
+			else {
+				userFromNeo.setCurrentGPS(false);
+				log.info("Called /user/"+user.getId()+" resource. Returning true, setting isCurrentGPS to false");
+			}
 			userRepository.save(userFromNeo);
 			
 			tx.success();
@@ -198,7 +206,6 @@ public class UserController {
 		finally{
 			tx.close();
 		}
-		log.info("Called /user/"+user.getId()+" resource. Returning true, setting latitude to "+user.getLatGPS()+" and longitude to "+user.getLonGPS());
 		return true;
     }
     

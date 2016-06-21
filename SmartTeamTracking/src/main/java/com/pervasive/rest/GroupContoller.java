@@ -54,8 +54,22 @@ public class GroupContoller {
 		finally{
 			tx.close();
 		}
-    	log.info("Called /group/"+groupId+" resource. Returning "+groupFromNeo.getContains().toString());
-		return RestUtils.clearTokens(groupFromNeo.getContains());    	
+		
+		// Must set to null coordinates if user not in range of group 
+		Set<User> usersInRadius = groupFromNeo.getContains();
+		for(User user : usersInRadius){
+			if(user.getLatGPS() != null && user.getLonGPS() != null){
+				// Check if distance between center and user is bigger than group radius
+				if( RestUtils.distance(user.getLatGPS(), groupFromNeo.getLatCenter(), 
+						user.getLonGPS(), groupFromNeo.getLongCenter(), 0, 0) > groupFromNeo.getRadius() ){
+					user.setLatGPS(null);
+					user.setLonGPS(null);
+				}	
+			}
+		}
+		
+    	log.info("Called /group/"+groupId+" resource. Returning "+usersInRadius.toString());
+		return RestUtils.clearTokens(usersInRadius);    	
     }
     
     //Returns -1 if can't find group, else returns number of users of a Group. 

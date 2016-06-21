@@ -112,7 +112,7 @@ public class FacebookUtils {
 				return null;
 			}
 			
-			User userToAdd = new User(name, surname, email, authData.getUser_id());
+			User userToAdd = new User(name, surname, email, authData.getUser_id(), false);
 			userToAdd.setAuthToken(token);
 			userFromNeo = userRepository.save(userToAdd);
 			tx.success();

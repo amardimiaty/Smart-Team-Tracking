@@ -17,7 +17,7 @@ public class Group{
 	private String name;
 	private Double latCenter;
 	private Double lonCenter;
-	private Integer radius;
+	private Integer radius; //Radius of the group defined in meters
 	
 	@RelatedTo(type="CONTAINS", direction=Direction.OUTGOING)
 	private @Fetch Set<User> contains;

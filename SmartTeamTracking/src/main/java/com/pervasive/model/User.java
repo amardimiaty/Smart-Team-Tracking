@@ -18,6 +18,7 @@ public class User{
 	private Double lonGPS;
 	private String authToken;
 	private String facebookId;
+	private boolean isCurrentGPS; 
 	
 	@RelatedTo(type="IN_RANGE", direction=Direction.OUTGOING)
 	private @Fetch Beacon beacon;  
@@ -25,15 +26,25 @@ public class User{
 	@SuppressWarnings("unused")
 	private User(){}
 	
-	public User(String name, String surname, String email,String facebookId) {
+	public User(String name, String surname, String email,String facebookId,boolean isCurrentGps) {
 		super();
 		id = null;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.facebookId = facebookId;
+		this.isCurrentGPS = isCurrentGps; 
 	}
 	
+	
+	public boolean isCurrentGPS() {
+		return isCurrentGPS;
+	}
+
+	public void setCurrentGPS(boolean isCurrentGPS) {
+		this.isCurrentGPS = isCurrentGPS;
+	}
+
 	public String getAuthToken() {
 		return authToken;
 	}
@@ -109,10 +120,10 @@ public class User{
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", latGPS=" + latGPS
-				+ ", lonGPS=" + lonGPS + ", authToken=" + authToken + ", facebookId=" + facebookId + ", beacon="
-				+ beacon + "]";
+				+ ", lonGPS=" + lonGPS + ", authToken=" + authToken + ", facebookId=" + facebookId + ", isCurrentGPS="
+				+ isCurrentGPS + ", beacon=" + beacon + "]";
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
