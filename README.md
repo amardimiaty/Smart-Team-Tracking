@@ -52,7 +52,7 @@ Each part of the application has its own README file, so you can check it if you
 Check the *README file* of each branch, since each part has different a installation.
 
 
-## Objectives and next improvements
+## Latest improvements and features
 
 + [x] Avoid sending unused data by REST calls 
 + [x] Website for adding beacons to the system 
