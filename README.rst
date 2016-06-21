@@ -146,7 +146,7 @@ Installation instructions
 To install one of these PHP modules to make REST requests inside a Drupal working web-application,
 you have to follow these steps:
 
-- Inside the Drupal environment, download and enable the *php filter* Drupal module;
+- Inside the Drupal environment, download and enable the **php filter** Drupal module;
 - Download the php module from Git;
-- Insert the PHP module as *body* of Drupal Content page;
+- Insert the PHP module as **body** of Drupal Content page;
 - Publish the Drupal page.
