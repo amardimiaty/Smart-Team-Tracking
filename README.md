@@ -41,25 +41,20 @@ The architecture components are the same of the whole project:
 The basic Android behaviour has been already shown in the main README file: when the Android device, where the application is installed, comes near a beacon, it will retrieve the beacon’s ID; after this, the Android Client will contact the Server, notifying the association Client-Beacon by the Server REST API. Finally, after this interaction, the device will wait a response from the Server when the operation is completed.<br />
 This is one of the main activities of the application; the lifecycle of the whole application is shown in the image below.
 
-<img src="http://i.imgur.com/eWglZKn.png" width="200" style="left:200px">
-<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/splash.png" width="200">
+![alt tag]("http://i.imgur.com/eWglZKn.png")
+
 
 When the application is started, the Splash Activity is started:
 
 <img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/splash.png" width="200">
+<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/login.png" width="200">
+<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/create_groups.png" width="200">
 
 here we do some basic interaction (starting the login activity, for an example), and then we switch into the Main Activity.<br />
-
-<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/login.png" width="48">
-
 From the Main Activity, we can spawn new activities to manage our groups, creating new ones with a specific radius (for privacy reasons) and adding people to them; 
-
-
-<img src="https://github.com/draugvar/Smart-Team-Tracking/blob/android_app/screenshots/create_groups.png" width="48">
-
 after having done that, we can check in the minimap where our friends are, when they will associated with a beacon representing a certain area.
 
-![alt tag](http://i.imgur.com/rPzXdSU)
+<img src="http://i.imgur.com/rPzXdSU.jpg" width="200">
 
 
 
