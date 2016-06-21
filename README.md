@@ -12,7 +12,7 @@ The main used technologies are:
 
 + **Estimote**
 providing a low-energy bluetooth device for indoor positioning<br />
-http://estimote.com/ https://www.bluetooth.com/
+http://estimote.com/ <br /> https://www.bluetooth.com/
 
 + **Global Positioning System (GPS)** <br />
 http://www.gps.gov/
