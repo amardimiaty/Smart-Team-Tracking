@@ -44,9 +44,6 @@ In addiction to this one, in the other parts of the application we have just oth
 
 ## Installation instructions
 
-For the Server Part:
-
-
 `git clone https://github.com/StefanoConoci/SmartTeamTrackingServer.git`
 
 `mvn clean`
