@@ -50,9 +50,9 @@ Check the README of each component, since each part has different a installation
 
 ## Objectives and next improves
 
-+ Avoid sending unused data by REST calls (**DONE**) - [x] completed
-+ Website for adding beacons to the system (**DONE**)
-+ Improve and Debug Android Application (**DONE**)
-+ Add REST calls for removing groups and to be able to leave a created group (**DONE**)
++ [x] **DONE** Avoid sending unused data by REST calls 
++ [x] **DONE** Website for adding beacons to the system 
++ [x] **DONE** Improve and Debug Android Application 
++ [x] **DONE** Add REST calls for removing groups and to be able to leave a created group 
 + **NEW** Cleanup of the Server Code (by tools)
 + **NEW** Show when a friend is not in range
