@@ -3,7 +3,7 @@ GroupTracking WebApp PHP Modules
 =======================================
 
 .. image:: https://github.com/biagiobotticelli/Drupal_Php_Modules/blob/master/images/logo.jpg
-   :align: center
+   :width: 200 px
 
 
 GroupTracking is an Android application that wants to allow to create group of friends obtained by Facebook
