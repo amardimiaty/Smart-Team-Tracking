@@ -38,12 +38,12 @@ The architecture components are the same of the whole project:
 + **Server**
 + **Database (Embedded Neo4j)**
 
-The basic Android behaviour has been already shown in the main README file: when the Android device, where the application is installed, comes near a beacon, it will retrieve the beacon’s ID; after this, the Android Client will contact the Server, notifying the association Client-Beacon by the Server REST API. Finally, after this interaction, the device will wait a response from the Server when the operation is completed.
+The basic Android behaviour has been already shown in the main README file: when the Android device, where the application is installed, comes near a beacon, it will retrieve the beacon’s ID; after this, the Android Client will contact the Server, notifying the association Client-Beacon by the Server REST API. Finally, after this interaction, the device will wait a response from the Server when the operation is completed.<br />
 This is one of the main activities of the application; the lifecycle of the whole application is shown in the image below.
 
 ![alt tag](http://i.imgur.com/eWglZKn.png)
 
-When the application is started, the Splash Activity is started: here we do some basic interaction (starting the login activity, for an example), and then we switch into the Main Activity.
+When the application is started, the Splash Activity is started: here we do some basic interaction (starting the login activity, for an example), and then we switch into the Main Activity.<br />
 From the Main Activity, we can spawn new activities to manage our groups, creating new ones with a specific radius (for privacy reasons) and adding people to them; after having done that, we can check in the minimap where our friends are, when they will associated with a beacon representing a certain area.
 
 
