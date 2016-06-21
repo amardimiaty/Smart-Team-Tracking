@@ -44,7 +44,7 @@ In addiction to this one, in the other parts of the application we have just oth
 
 ## Installation instructions
 
-`git clone https://github.com/StefanoConoci/SmartTeamTrackingServer.git`
+`git clone https://github.com/draugvar/Smart-Team-Tracking.git`
 
 `mvn clean`
 
@@ -56,12 +56,3 @@ For the Client Part:
 Simply download the .apk file and install it in your application.
 
 Finally, you will have to setup the IP address of your machine in the Client code.
-
-
-## Objectives and next improves
-
-+ Avoid sending unused data by REST calls
-+ Website for adding beacons to the system
-+ Improve and Debug Android Application
-+ Add REST calls for removing groups and to be able to leave a created group
-
