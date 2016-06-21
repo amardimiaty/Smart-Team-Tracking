@@ -104,7 +104,7 @@ public class GroupActivity extends AppCompatActivity implements OnMapReadyCallba
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(false);
             if(        WorkflowManager.getWorkflowManager().getMyselfGPSLatitude()  != null
-                    && WorkflowManager.getWorkflowManager().getMyselfGPSLongitude() !=null){
+                    && WorkflowManager.getWorkflowManager().getMyselfGPSLongitude() != null){
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                         new LatLng(WorkflowManager.getWorkflowManager().getMyselfGPSLatitude(),
                                    WorkflowManager.getWorkflowManager().getMyselfGPSLongitude()), 12));
