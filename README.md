@@ -68,7 +68,7 @@ You can find us on LinkedIn Profiles:
 - *Davide Meacci*: https://it.linkedin.com/in/davide-meacci-ab065bb7/en ;
 - *Salvatore Rivieccio*: https://it.linkedin.com/in/salvatore-rivieccio-653644b7/en .
 
-Presentation on *SlideShare*: http://www.slideshare.net/BiagioBotticelli/smart-team-tracking-project-group-tracking
+Presentation on *SlideShare*: http://www.slideshare.net/DavideMeacci1/smart-team-tracking-63290686
 
 The project was developed for the course of "Pervasive Systems 2016", 
 held by Prof. Ioannis Chatzigiannakis
