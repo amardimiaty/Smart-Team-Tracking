@@ -45,7 +45,7 @@ import draugvar.smartteamtracking.singleton.WorkflowManager;
 public class GroupActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static GoogleMap mMap;
     private static FastItemAdapter<GroupMemberItem> fastAdapter;
-    private Group group;
+    private static Group group;
     private Messenger messenger;
 
 
@@ -196,6 +196,15 @@ public class GroupActivity extends AppCompatActivity implements OnMapReadyCallba
             }
             //Move stuff inside the map
             mMap.clear();
+
+            CircleOptions circleOptions = new CircleOptions()
+                    .center(new LatLng(group.getLatCenter(), group.getLonCenter()))
+                    .radius(group.getRadius()) // In meters
+                    .strokeWidth(3)
+                    .strokeColor(Color.argb(40, 20, 20, 20))
+                    .fillColor(Color.argb(20, 20, 20, 20));
+            mMap.addCircle(circleOptions);
+
             LatLng latLng;
             for(GroupMemberItem groupMemberItem: fastAdapter.getAdapterItems()){
                 if(groupMemberItem.user.getBeacon() != null) {

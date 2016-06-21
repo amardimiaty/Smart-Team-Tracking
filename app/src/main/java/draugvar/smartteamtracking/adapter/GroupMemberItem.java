@@ -1,6 +1,7 @@
 package draugvar.smartteamtracking.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -36,6 +37,7 @@ public class GroupMemberItem extends AbstractItem<GroupMemberItem, GroupMemberIt
     //The logic to bind your data to the view
     @Override
     public void bindView(ViewHolder viewHolder) {
+        Context context = viewHolder.card.getContext();
         //call super so the selection is already handled for you
         super.bindView(viewHolder);
         //bind our data
@@ -44,17 +46,23 @@ public class GroupMemberItem extends AbstractItem<GroupMemberItem, GroupMemberIt
         //set the text for the description or hide
         viewHolder.description.setText(user.getSurname());
         //set the text for status of parties
-        if(user.getBeacon() != null)
-        {
+        if(user.getBeacon() != null) {
             viewHolder.status.setText(user.getBeacon().getName());
-
-        } else if(!user.isCurrentGPS()){
-            viewHolder.card.setEnabled(false);
+            viewHolder.status.setTextColor(ContextCompat.getColor(context, R.color.green_500));
+        } else if(user.getLatGPS() == null && user.getLonGPS() == null){
             String beacon = "Out of Range";
             viewHolder.status.setText(beacon);
+            viewHolder.status.setTextColor(ContextCompat.getColor(context, R.color.red_500));
         } else {
-            String beacon = "No Beacon";
-            viewHolder.status.setText(beacon);
+            if(user.isCurrentGPS()){
+                String beacon = "GPS";
+                viewHolder.status.setText(beacon);
+                viewHolder.status.setTextColor(ContextCompat.getColor(context, R.color.green_500));;
+            } else {
+                String beacon = "Last position";
+                viewHolder.status.setText(beacon);
+                viewHolder.status.setTextColor(ContextCompat.getColor(context, R.color.orange_500));
+            }
         }
         //set the text for initials // to do elaborate!
         if(!user.getName().isEmpty()) {

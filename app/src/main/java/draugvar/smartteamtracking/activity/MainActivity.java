@@ -166,104 +166,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setBeaconManager() {
-        final BeaconManager beaconManager;
-        // ----- Estimote Beacon set-up ----- //
-        beaconManager = new BeaconManager(getApplicationContext());
-
-        beaconManager.setMonitoringListener(new BeaconManager.MonitoringListener() {
-            private boolean flag;
-
-            private Thread thread = new Thread( new Runnable() {
-                public volatile boolean shouldContinue = true;
-                @Override
-                public void run() {
-                    while(shouldContinue) {
-                        Log.d("onExitedRegion", "runnable started!");
-                        if (flag) {
-                            flag = false;
-                        } else {
-                            Log.d("Beacon", "Called onExitedRegion");
-                            //beaconManager.stopRanging(region);
-                            new AddInRange(WorkflowManager.getWorkflowManager().getMyselfId(),
-                                    null,
-                                    null).execute();
-                            WorkflowManager.getWorkflowManager().setCurrentBeacon(null);
-                            shouldContinue = false;
-                        }
-                        SystemClock.sleep(35000);
-                    }
-                }
-            });
-
-            @Override
-            public void onEnteredRegion(Region region, List<Beacon> list) {
-                Log.d("Beacon","Called onEnteredRegion");
-                //beaconManager.startRanging(region);
-                if(list.size() != 0) {
-                    flag =  true;
-                    Beacon nearestBeacon = list.get(0);
-                    if (WorkflowManager.getWorkflowManager().getCurrentBeacon() == null
-                            || !WorkflowManager.getWorkflowManager().getCurrentBeacon().getMajor().equals(nearestBeacon.getMajor())
-                            || !WorkflowManager.getWorkflowManager().getCurrentBeacon().getMinor().equals(nearestBeacon.getMinor())) {
-                        new AddInRange(WorkflowManager.getWorkflowManager().getMyselfId(),
-                                nearestBeacon.getMajor(),
-                                nearestBeacon.getMinor()).execute();
-                        draugvar.smartteamtracking.data.Beacon newBeacon = new draugvar.smartteamtracking.data.Beacon();
-                        newBeacon.setMajor(nearestBeacon.getMajor());
-                        newBeacon.setMinor(nearestBeacon.getMinor());
-                        Log.d("Beacon", "Updating new current beacon in singleton");
-                        WorkflowManager.getWorkflowManager().setCurrentBeacon(newBeacon);
-                    }
-                }
-            }
-
-            @Override
-            public void onExitedRegion(Region region) {
-                if(!thread.isAlive()){
-                    thread.start();
-                }
-            }
-        });
-
-        beaconManager.setRangingListener( new BeaconManager.RangingListener(){
-
-            @Override
-            public void onBeaconsDiscovered(Region region, List<Beacon> list) {
-                Log.d("Beacon","Called onBeaconDiscovery");
-                if (!list.isEmpty()) {
-                    Beacon nearestBeacon = list.get(0);
-                    for (Beacon beacon : list) {
-                        if(nearestBeacon.getMeasuredPower() < beacon.getMeasuredPower())
-                            nearestBeacon = beacon;
-                    }
-
-                    if(         WorkflowManager.getWorkflowManager().getCurrentBeacon() == null
-                            || !WorkflowManager.getWorkflowManager().getCurrentBeacon().getMajor().equals(nearestBeacon.getMajor())
-                            || !WorkflowManager.getWorkflowManager().getCurrentBeacon().getMinor().equals(nearestBeacon.getMinor())) {
-                        new AddInRange(WorkflowManager.getWorkflowManager().getMyselfId(),
-                                nearestBeacon.getMajor(),
-                                nearestBeacon.getMinor()).execute();
-                        draugvar.smartteamtracking.data.Beacon newBeacon = new draugvar.smartteamtracking.data.Beacon();
-                        newBeacon.setMajor(nearestBeacon.getMajor());
-                        newBeacon.setMinor(nearestBeacon.getMinor());
-                        Log.d("Beacon","Updating new current beacon in singleton");
-                        WorkflowManager.getWorkflowManager().setCurrentBeacon(newBeacon);
-                    }
-                }
-            }
-        });
-
-        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
-            @Override
-            public void onServiceReady() {
-                beaconManager.startMonitoring(new Region(
-                        "monitored region",
-                        UUID.fromString("b9407f30-f5f8-466e-aff9-25556b57fe6d"), // UUID
-                        null, null)); // Major, Minor
-            }
-        });
-    }
 
     public void setFastAdapter() {
         //init our FastAdapter which will manage everything
@@ -387,5 +289,111 @@ public class MainActivity extends AppCompatActivity {
         } catch (SecurityException e) {
             Log.d("Location", "Location not enabled");
         }
+    }
+
+    public void setBeaconManager() {
+        final BeaconManager beaconManager;
+        // ----- Estimote Beacon set-up ----- //
+        beaconManager = new BeaconManager(getApplicationContext());
+
+        beaconManager.setMonitoringListener(new BeaconManager.MonitoringListener() {
+            /*private boolean flag;
+
+            private Thread thread = new Thread( new Runnable() {
+                public volatile boolean shouldContinue = true;
+                @Override
+                public void run() {
+                    while(shouldContinue) {
+                        Log.d("onExitedRegion", "runnable started!");
+                        if (flag) {
+                            flag = false;
+                        } else {
+                            Log.d("Beacon", "Called onExitedRegion");
+                            //beaconManager.stopRanging(region);
+                            new AddInRange(WorkflowManager.getWorkflowManager().getMyselfId(),
+                                    null,
+                                    null).execute();
+                            WorkflowManager.getWorkflowManager().setCurrentBeacon(null);
+                            shouldContinue = false;
+                        }
+                        SystemClock.sleep(35000);
+                    }
+                }
+            });*/
+
+            @Override
+            public void onEnteredRegion(Region region, List<Beacon> list) {
+                Log.d("Beacon","Called onEnteredRegion");
+                beaconManager.startRanging(region);
+                /*if(list.size() != 0) {
+                    Beacon nearestBeacon = list.get(0);
+                    if (WorkflowManager.getWorkflowManager().getCurrentBeacon() == null
+                            || !WorkflowManager.getWorkflowManager().getCurrentBeacon().getMajor().equals(nearestBeacon.getMajor())
+                            || !WorkflowManager.getWorkflowManager().getCurrentBeacon().getMinor().equals(nearestBeacon.getMinor())) {
+                        new AddInRange(WorkflowManager.getWorkflowManager().getMyselfId(),
+                                nearestBeacon.getMajor(),
+                                nearestBeacon.getMinor()).execute();
+                        draugvar.smartteamtracking.data.Beacon newBeacon = new draugvar.smartteamtracking.data.Beacon();
+                        newBeacon.setMajor(nearestBeacon.getMajor());
+                        newBeacon.setMinor(nearestBeacon.getMinor());
+                        Log.d("Beacon", "Updating new current beacon in singleton");
+                        WorkflowManager.getWorkflowManager().setCurrentBeacon(newBeacon);
+                    }
+                } else {
+                    new AddInRange(WorkflowManager.getWorkflowManager().getMyselfId(),
+                            null,
+                            null).execute();
+                    WorkflowManager.getWorkflowManager().setCurrentBeacon(null);
+                }*/
+            }
+
+            @Override
+            public void onExitedRegion(Region region) {
+                Log.d("Beacon", "Called onExitedRegion");
+            }
+        });
+
+        beaconManager.setRangingListener( new BeaconManager.RangingListener(){
+
+            @Override
+            public void onBeaconsDiscovered(Region region, List<Beacon> list) {
+                Log.d("Beacon","Called onBeaconDiscovery");
+                if (!list.isEmpty()) {
+                    Beacon nearestBeacon = list.get(0);
+                    for (Beacon beacon : list) {
+                        if(nearestBeacon.getMeasuredPower() < beacon.getMeasuredPower())
+                            nearestBeacon = beacon;
+                    }
+
+                    if(         WorkflowManager.getWorkflowManager().getCurrentBeacon() == null
+                            || !WorkflowManager.getWorkflowManager().getCurrentBeacon().getMajor().equals(nearestBeacon.getMajor())
+                            || !WorkflowManager.getWorkflowManager().getCurrentBeacon().getMinor().equals(nearestBeacon.getMinor())) {
+                        new AddInRange(WorkflowManager.getWorkflowManager().getMyselfId(),
+                                nearestBeacon.getMajor(),
+                                nearestBeacon.getMinor()).execute();
+                        draugvar.smartteamtracking.data.Beacon newBeacon = new draugvar.smartteamtracking.data.Beacon();
+                        newBeacon.setMajor(nearestBeacon.getMajor());
+                        newBeacon.setMinor(nearestBeacon.getMinor());
+                        Log.d("Beacon","Updating new current beacon in singleton");
+                        WorkflowManager.getWorkflowManager().setCurrentBeacon(newBeacon);
+                    }
+                } else {
+                    new AddInRange(WorkflowManager.getWorkflowManager().getMyselfId(),
+                            null,
+                            null).execute();
+                    WorkflowManager.getWorkflowManager().setCurrentBeacon(null);
+                }
+            }
+        });
+
+        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                beaconManager.startMonitoring(new Region(
+                        "monitored region",
+                        UUID.fromString("b9407f30-f5f8-466e-aff9-25556b57fe6d"), // UUID
+                        null, null)); // Major, Minor
+            }
+        });
     }
 }

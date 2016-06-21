@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.estimote.sdk.Beacon;
@@ -13,8 +14,10 @@ import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 
 import java.util.List;
+import java.util.UUID;
 
 import draugvar.smartteamtracking.activity.MainActivity;
+import draugvar.smartteamtracking.rest.AddInRange;
 import draugvar.smartteamtracking.singleton.WorkflowManager;
 
 public class SmartApplication extends Application {
