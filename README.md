@@ -11,18 +11,18 @@ How this works?
 The main used technologies are:
 
 + **Estimote-SDK**
-The library used to interact with estimote beacons.
+The library used to interact with estimote beacons.<br />
 http://developer.estimote.com
 
 + **Global Positioning System (GPS)**
 http://www.gps.gov/
 
 + **REST calls**
-We all know how a REST call works.
+We all know how a REST call works.<br />
 https://en.wikipedia.org/wiki/Representational_state_transfer
 
 + **Spring**
-a framework for simple,fast, flexible and portable development
+a framework for simple,fast, flexible and portable development<br />
 https://spring.io/
 
 
@@ -59,11 +59,3 @@ From the Main Activity, we can spawn new activities to manage our groups, creati
 + get the .apk file and install it
 
 Otherwise, you can directly install the .apk file in your device.
-
-
-## Objectives and next improves
-
-+ Avoid sending unused data by REST calls
-+ Website for adding beacons to the system
-+ Improve and Debug Android Application
-+ Add REST calls for removing groups and to be able to leave a created group
