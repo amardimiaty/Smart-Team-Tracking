@@ -1,4 +1,4 @@
-# SmartTeamTracking Server
+# SmartTeamTracking
 
 The SmartTeamTracking Project allows people to connect and reach out easily both Indoor and Outdoor.
 Users can simply create their own group, identified by a location and a radius, and then invite their friends to this group, sharing each other their position if they are within the boundaries of the group.
